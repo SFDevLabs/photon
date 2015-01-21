@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose');
 var Notifier = require('notifier');
-var config = require('config');
+var config = require('../config');
 
 /**
  * Process the templates using swig - refer to notifier#processTemplate method
