@@ -23,7 +23,7 @@ console.log('config ' + config);
 // Connect to mongodb
 var connect = function () {
   var options = { server: { socketOptions: { keepAlive: 1 } } };
-  mongoose.connect(config.db, options);
+  mongoose.connect(process.env.MONGOLAB_URI, options);
 };
 connect();
 
