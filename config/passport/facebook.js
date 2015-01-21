@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose');
 var FacebookStrategy = require('passport-facebook').Strategy;
-var config = require('config');
+var config = require('../../config/config');
 var User = mongoose.model('User');
 
 /**

@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose');
 var LinkedinStrategy = require('passport-linkedin').Strategy;
-var config = require('config');
+var config = require('../../config/config');
 var User = mongoose.model('User');
 
 /**
