@@ -6,10 +6,10 @@
 // Note: We can require users, articles and other cotrollers because we have
 // set the NODE_PATH to be ./app/controllers (package.json # scripts # start)
 
-var users = require('users');
-var articles = require('articles');
-var comments = require('comments');
-var tags = require('tags');
+var users = require('../app/controllers/users');
+var articles = require('../app/controllers/articles');
+var comments = require('../app/controllers/comments');
+var tags = require('../app/controllers/tags');
 var auth = require('./middlewares/authorization');
 
 /**
