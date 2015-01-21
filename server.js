@@ -17,13 +17,11 @@ var config = require('./config/config');
 var app = express();
 var port = process.env.PORT || 3000;
 
-console.log('config ' + config);
-
 
 // Connect to mongodb
 var connect = function () {
   var options = { server: { socketOptions: { keepAlive: 1 } } };
-  mongoose.connect(process.env.MONGOLAB_URI, options);
+  mongoose.connect(config.db, options);
 };
 connect();
 
