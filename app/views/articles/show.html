@@ -5,6 +5,29 @@
 {% endblock %}
 
 {% block content %}
+  <div class="gridster">
+      <ul>
+    {% for article in "1234567890" %}
+      <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">{{article}}</li>
+    {% endfor %}
+<!--           
+          <li data-row="2" data-col="1" data-sizex="1" data-sizey="1"></li>
+          <li data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
+   
+          <li data-row="1" data-col="2" data-sizex="2" data-sizey="1"></li>
+          <li data-row="2" data-col="2" data-sizex="2" data-sizey="2"></li>
+   
+          <li data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
+          <li data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
+          <li data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+   
+          <li data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
+          <li data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>
+   
+          <li data-row="1" data-col="6" data-sizex="1" data-sizey="1"></li>
+          <li data-row="2" data-col="6" data-sizex="1" data-sizey="2"></li> -->
+      </ul>
+  </div>
   <div class="row">
     <div class="col-md-8">
       <p>{{ article.body }}</p>
@@ -20,7 +43,7 @@
             Tags: &nbsp;
             {% for tag in article.tags.split(',') %}
               <i class="muted fa fa-tag"></i>&nbsp;
-              <a href="{{ '/tags/' + tag }}" class="tag">{{ tag }}</a>
+              <a href="{{ '/tags/ ' + tag }}" class="tag">{{ tag }}</a>
               &nbsp;&nbsp;
             {% endfor %}
           </p>
@@ -54,5 +77,18 @@
   {% include '../comments/form.html' %}
 {% endblock %}
 {% block subfoot %}
+<script type="text/javascript">
+  $(function(){ //DOM Ready
+ 
+    $(".gridster ul").gridster({
+        widget_margins: [12, 12],
+        widget_base_dimensions: [140, 140],
+        resize: {
+            enabled: true
+        }
+    });
+ 
+});
+</script>
 {% endblock %}
 
