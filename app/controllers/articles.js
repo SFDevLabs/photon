@@ -38,12 +38,13 @@ exports.index = function (req, res){
   Article.list(options, function (err, articles) {
     if (err) return res.render('500');
     Article.count().exec(function (err, count) {
-      res.render('articles/index', {
-        title: 'Articles',
-        articles: articles,
-        page: page + 1,
-        pages: Math.ceil(count / perPage)
-      });
+      res.send(articles)
+      // res.render('articles/index', {
+      //   title: 'Articles',
+      //   articles: articles,
+      //   page: page + 1,
+      //   pages: Math.ceil(count / perPage)
+      // });
     });
   });
 };

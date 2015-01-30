@@ -89,7 +89,7 @@ module.exports = function (app, passport) {
 
   // article routes
   app.param('id', articles.load);
-  app.get('/articles', articles.index);
+  app.get('/api/albums', articles.index);
   app.get('/articles/new', auth.requiresLogin, articles.new);
   app.post('/articles', auth.requiresLogin, articles.create);
   app.get('/articles/:id', articles.show);

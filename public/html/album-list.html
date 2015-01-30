@@ -1,0 +1,44 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="./album-card.html">
+
+<polymer-element name="album-list" attributes="show">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+    }
+    post-card {
+      margin-bottom: 30px;
+    }
+    </style>
+    <div layout vertical center>
+      <template repeat="{{post in posts}}">
+        <album-card>
+          <h2>{{post._id}}</h2>
+        </album-card>
+      </template>
+    </div>
+
+    <core-ajax id="ajax"
+      auto
+      url="/api/albums"
+      on-core-response="{{postsLoaded}}"
+      handleAs="json">
+    </core-ajax>
+  </template>
+
+  <script>
+  Polymer({
+    created: function() {
+      this.posts = [];
+    },
+    postsLoaded: function(event, obj) {
+      this.posts = obj.response;
+      // Make a copy of the loaded data
+      //this.posts = this.$.ajax.response.slice(0);
+    }
+  });
+  </script>
+</polymer-element>
