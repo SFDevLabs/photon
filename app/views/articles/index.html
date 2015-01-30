@@ -1,26 +1,19 @@
 {% extends '../layouts/default.html' %}
 
-{% block main %}
-  <h1>{{ title }}</h1>
+
+{% block head %}
+  {# Styles #}
+<link rel="import" href="../bower_components/polymer/polymer.html">
+{% endblock %}
+
+{% block body %}
+<polymer-element name="my-element" noscript>
+  <template>
+    <span>Hello from <b>my-element</b>. This is my Shadow DOM.</span>
+  </template>
+</polymer-element>
 {% endblock %}
 
 {% block content %}
-  {% if (articles.length) %}
-    {% for article in articles %}
-      {% include 'article.html' %}
-    {% endfor %}
-
-    {% if (pages > 1) %}
-      <ul class="pagination">
-        {% autoescape false %}
-          {{ createPagination(pages, page) }}
-        {% endautoescape %}
-      </ul>
-    {% endif %}
-  {% else %}
-    <h4 class="muted">
-      No articles.&nbsp;
-      <a href="/articles/new">create one</a>
-    </h4>
-  {% endif %}
+  
 {% endblock %}

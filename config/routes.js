@@ -98,7 +98,9 @@ module.exports = function (app, passport) {
   app.delete('/articles/:id', articleAuth, articles.destroy);
 
   // home route
-  app.get('/', articles.index);
+  app.get('/', function(){
+    res.sendfile("../public/index.html")
+  });
 
   // comment routes
   app.param('commentId', comments.load);
