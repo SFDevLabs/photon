@@ -7,7 +7,7 @@
 // set the NODE_PATH to be ./app/controllers (package.json # scripts # start)
 
 var users = require('../app/controllers/users');
-var articles = require('../app/controllers/articles');
+var albums = require('../app/controllers/albums');
 var comments = require('../app/controllers/comments');
 var tags = require('../app/controllers/tags');
 var auth = require('./middlewares/authorization');
@@ -88,25 +88,29 @@ module.exports = function (app, passport) {
   app.param('userId', users.load);
 
   // article routes
-  app.param('id', articles.load);
-  app.get('/api/albums', articles.index);
-  app.get('/articles/new', auth.requiresLogin, articles.new);
-  app.post('/articles', auth.requiresLogin, articles.create);
-  app.get('/articles/:id', articles.show);
-  app.get('/articles/:id/edit', articleAuth, articles.edit);
-  app.put('/articles/:id', articleAuth, articles.update);
-  app.delete('/articles/:id', articleAuth, articles.destroy);
+  // app.get('/api/albums', albums.index);
+  // app.put('/api/albums/:id', albums.update);
+  // app.post('/api/albums', albums.create);
+
+
+  // article routes
+  app.param('id', albums.load);
+  app.get('/albums', albums.index);
+  app.get('/albums/new', auth.requiresLogin, albums.new);
+  app.post('/albums', auth.requiresLogin, albums.create);
+  app.get('/albums/:id', albums.show);
+  app.get('/albums/:id/edit', articleAuth, albums.edit);
+  app.put('/albums/:id', articleAuth, albums.update);
+  app.delete('/albums/:id', articleAuth, albums.destroy);
 
   // home route
-  app.get('/', function(){
-    res.sendfile("../public/index.html")
-  });
+  app.get('/', albums.index);
 
   // comment routes
   app.param('commentId', comments.load);
-  app.post('/articles/:id/comments', auth.requiresLogin, comments.create);
-  app.get('/articles/:id/comments', auth.requiresLogin, comments.create);
-  app.delete('/articles/:id/comments/:commentId', commentAuth, comments.destroy);
+  app.post('/albums/:id/comments', auth.requiresLogin, comments.create);
+  app.get('/albums/:id/comments', auth.requiresLogin, comments.create);
+  app.delete('/albums/:id/comments/:commentId', commentAuth, comments.destroy);
 
   // tag routes
   app.get('/tags/:tag', tags.index);

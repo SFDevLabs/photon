@@ -1,43 +1,76 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon.html">
+
+<link rel="import" href="../services/album-service.html">
 <link rel="import" href="./album-card.html">
 
 <polymer-element name="album-list" attributes="show">
   <template>
-    <style>
-    :host {
-      display: block;
+  <style>
+    html,body {
+      height: 100%;
+      margin: 0;
+      background-color: #E5E5E5;
+      font-family: 'RobotoDraft', sans-serif;
+    }
+    core-header-panel {
+      height: 100%;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch; 
+    }
+    core-toolbar {
+      background: #03a9f4;
+      color: white;
+    }
+    #tabs {
       width: 100%;
+      margin: 0;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    text-transform: uppercase;
     }
-    post-card {
-      margin-bottom: 30px;
+    .container {
+      width: 80%;
+      margin: 50px auto;
     }
-    </style>
+    @media (min-width: 481px) {
+      #tabs {
+        width: 200px;
+      }
+      .container {
+        width: 400px;
+      }
+    }
+  </style>
+
+    <core-toolbar flex horizontal>
+     <span flex>Title</span>
+    </core-toolbar>
+
+    <album-service id="service" posts="{{posts}}"></album-service>
+
     <div layout vertical center>
       <template repeat="{{post in posts}}">
-        <album-card>
+        <post-card
+          favorite="{{post.favorite}}"
+          on-favorite-tap="{{handleFavorite}}"
+          hidden?="{{show == 'favorites' && !post.favorite}}">
+          <img src="{{post.avatar}}" width="70" height="70">
           <h2>{{post._id}}</h2>
-        </album-card>
+          <p>{{post}}</p>
+        </post-card>
       </template>
     </div>
-
-    <core-ajax id="ajax"
-      auto
-      url="/api/albums"
-      on-core-response="{{postsLoaded}}"
-      handleAs="json">
-    </core-ajax>
   </template>
 
   <script>
   Polymer({
-    created: function() {
-      this.posts = [];
-    },
-    postsLoaded: function(event, obj) {
-      this.posts = obj.response;
-      // Make a copy of the loaded data
-      //this.posts = this.$.ajax.response.slice(0);
+    handleFavorite: function(event, detail, sender) {
+      var post = sender.templateInstance.model.post;
+      this.$.service.setFavorite(sender.templateInstance.model.post, sender);
     }
   });
   </script>

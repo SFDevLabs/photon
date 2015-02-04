@@ -4,7 +4,7 @@
  */
 
 var mongoose = require('mongoose')
-var Article = mongoose.model('Article')
+var Album = mongoose.model('Album')
 var utils = require('../../lib/utils')
 var extend = require('util')._extend
 
@@ -15,10 +15,11 @@ var extend = require('util')._extend
 exports.load = function (req, res, next, id){
   var User = mongoose.model('User');
 
-  Article.load(id, function (err, article) {
+  Album.load(id, function (err, album) {
+    console.log(album, err)
     if (err) return next(err);
-    if (!article) return next(new Error('not found'));
-    req.article = article;
+    if (!album) return next(new Error('not found'));
+    req.album = album;
     next();
   });
 };
@@ -35,16 +36,16 @@ exports.index = function (req, res){
     page: page
   };
 
-  Article.list(options, function (err, articles) {
+  Album.list(options, function (err, articles) {
     if (err) return res.render('500');
-    Article.count().exec(function (err, count) {
-      res.send(articles)
-      // res.render('articles/index', {
-      //   title: 'Articles',
-      //   articles: articles,
-      //   page: page + 1,
-      //   pages: Math.ceil(count / perPage)
-      // });
+    Album.count().exec(function (err, count) {
+     // res.send(articles)
+      res.render('albums/index', {
+        title: 'Articles',
+        articles: articles,
+        page: page + 1,
+        pages: Math.ceil(count / perPage)
+      });
     });
   });
 };
@@ -54,9 +55,9 @@ exports.index = function (req, res){
  */
 
 exports.new = function (req, res){
-  res.render('articles/new', {
+  res.render('albums/new', {
     title: 'New Article',
-    article: new Article({})
+    article: new Album({})
   });
 };
 
@@ -66,19 +67,19 @@ exports.new = function (req, res){
  */
 
 exports.create = function (req, res) {
-  var article = new Article(req.body);
+  var article = new Album(req.body);
   var images = req.files.image
     ? [req.files.image]
     : undefined;
 
   article.user = req.user;
-  article.uploadAndSave(images, function (err) {
+  article.save(function (err) {
     if (!err) {
       req.flash('success', 'Successfully created article!');
-      return res.redirect('/articles/'+article._id);
+      return res.redirect('/albums/'+article._id);
     }
     console.log(err);
-    res.render('articles/new', {
+    res.render('albums/new', {
       title: 'New Article',
       article: article,
       errors: utils.errors(err.errors || err)
@@ -91,7 +92,7 @@ exports.create = function (req, res) {
  */
 
 exports.edit = function (req, res) {
-  res.render('articles/edit', {
+  res.render('albums/edit', {
     title: 'Edit ' + req.article.title,
     article: req.article
   });
@@ -102,7 +103,7 @@ exports.edit = function (req, res) {
  */
 
 exports.update = function (req, res){
-  var article = req.article;
+  var article = req.album;
   var images = req.files.image
     ? [req.files.image]
     : undefined;
@@ -113,10 +114,10 @@ exports.update = function (req, res){
 
   article.uploadAndSave(images, function (err) {
     if (!err) {
-      return res.redirect('/articles/' + article._id);
+      return res.redirect('/albums/' + article._id);
     }
 
-    res.render('articles/edit', {
+    res.render('albums/edit', {
       title: 'Edit Article',
       article: article,
       errors: utils.errors(err.errors || err)
@@ -129,9 +130,9 @@ exports.update = function (req, res){
  */
 
 exports.show = function (req, res){
-  res.render('articles/show', {
-    title: req.article.title,
-    article: req.article
+  res.render('albums/show', {
+    title: req.album.title,
+    article: req.album
   });
 };
 

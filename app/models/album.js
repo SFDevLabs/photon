@@ -32,7 +32,7 @@ var setTags = function (tags) {
  * Article Schema
  */
 
-var ArticleSchema = new Schema({
+var AlbumSchema = new Schema({
   title: {type : String, default : '', trim : true},
   body: {type : String, default : '', trim : true},
   user: {type : Schema.ObjectId, ref : 'User'},
@@ -53,14 +53,14 @@ var ArticleSchema = new Schema({
  * Validations
  */
 
-ArticleSchema.path('title').required(true, 'Article title cannot be blank');
-ArticleSchema.path('body').required(true, 'Article body cannot be blank');
+AlbumSchema.path('title').required(true, 'Article title cannot be blank');
+AlbumSchema.path('body').required(true, 'Article body cannot be blank');
 
 /**
  * Pre-remove hook
  */
 
-ArticleSchema.pre('remove', function (next) {
+AlbumSchema.pre('remove', function (next) {
   var imager = new Imager(imagerConfig, 'S3');
   var files = this.image.files;
 
@@ -76,7 +76,7 @@ ArticleSchema.pre('remove', function (next) {
  * Methods
  */
 
-ArticleSchema.methods = {
+AlbumSchema.methods = {
 
   /**
    * Save article and upload image
@@ -151,7 +151,7 @@ ArticleSchema.methods = {
  * Statics
  */
 
-ArticleSchema.statics = {
+AlbumSchema.statics = {
 
   /**
    * Find article by id
@@ -188,4 +188,4 @@ ArticleSchema.statics = {
   }
 }
 
-mongoose.model('Article', ArticleSchema);
+mongoose.model('Album', AlbumSchema);

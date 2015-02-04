@@ -1,35 +1,22 @@
-<!doctype html>
-<html>
-  <head prefix="og: http://ogp.me/ns# commonplace: http://ogp.me/ns/apps/commonplace#">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-
-    <title>{{ title }}</title>
-    <meta name="keywords" content="{{ pkg.keywords.join(',') }}">
-    <meta name="description" content="{{ pkg.description }}">
-
-    {# Opengraph tags #}
-    <meta property="fb:app_id" content="293989217296609">
-    <meta property="og:title" content=pkg.name + ' - ' + title>
-    <meta property="og:description" content=pkg.description>
-    <meta property="og:url" content="http://common.place">
-    <meta property="og:site_name" content="Common Place">
-    <meta property="fb:admins" content="">
-
-    {% block head %}
-      {# Styles #}
-    {% endblock %}
-  </head>
+  {% include '../includes/head.html' %}
 
   <body>
-        <div class="messages">
-            {% include '../includes/messages.html' %}
-        </div>
-        {% block body %}{% endblock %}
+    {% include '../includes/header.html' %}
+    <div class="container">
+      <div class="page-header">
+        {% block main %}{% endblock %}
+      </div>
+      <div class="messages">
+        {% include '../includes/messages.html' %}
+      </div>
+      <div class="content">
+        {% block content %}{% endblock %}
+      </div>
     </div>
     {% include '../includes/footer.html' %}
     {% include '../includes/foot.html' %}
     {% block subfoot %}{% endblock %}
   </body>
 </html>
+
+

@@ -5,28 +5,41 @@
 {% endblock %}
 
 {% block content %}
+  <style>
+  .gridster{
+    height:500px;
+  }
+  .gridster div div{
+    
+      background-color: red;
+  }
+  .gridster [class*="col-"] {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: #eee;
+    background-color: rgba(86,61,124,.15);
+    border: 1px solid #ddd;
+    border: 1px solid rgba(86,61,124,.2);
+  }
+  .one{
+    width: calc(100% / 3);
+    height: calc(100% / 3 * 2);
+    background-color: red;
+  }
+  .two{
+    width: calc(100% / 3);
+    height: calc(100% / 3 * 1);
+    background-color: green;
+  }
+
+  </style>
   <div class="gridster">
-      <ul>
-    {% for article in "1234567890" %}
+      
+<!--     {% for article in "1234567890" %}
       <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">{{article}}</li>
-    {% endfor %}
-<!--           
-          <li data-row="2" data-col="1" data-sizex="1" data-sizey="1"></li>
-          <li data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
-   
-          <li data-row="1" data-col="2" data-sizex="2" data-sizey="1"></li>
-          <li data-row="2" data-col="2" data-sizex="2" data-sizey="2"></li>
-   
-          <li data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
-          <li data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
-          <li data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
-   
-          <li data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
-          <li data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>
-   
-          <li data-row="1" data-col="6" data-sizex="1" data-sizey="1"></li>
-          <li data-row="2" data-col="6" data-sizex="1" data-sizey="2"></li> -->
-      </ul>
+    {% endfor %} -->
+      <div class="one">1</div>
+      <div class="two">2</div>
   </div>
   <div class="row">
     <div class="col-md-8">

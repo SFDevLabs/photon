@@ -3,7 +3,7 @@
  */
 
 var mongoose = require('mongoose');
-var Article = mongoose.model('Article');
+var Article = mongoose.model('Album');
 
 /**
  * List items tagged with a tag
@@ -22,7 +22,7 @@ exports.index = function (req, res) {
   Article.list(options, function(err, articles) {
     if (err) return res.render('500');
     Article.count(criteria).exec(function (err, count) {
-      res.render('articles/index', {
+      res.render('albums/index', {
         title: 'Articles tagged ' + req.param('tag'),
         articles: articles,
         page: page + 1,

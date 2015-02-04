@@ -18,6 +18,8 @@
     "polymer": "Polymer/polymer#~0.5.4",
     "core-ajax": "Polymer/core-ajax#~0.5.4",
     "core-icon-button":"Polymer/core-icon-button#~0.5.4",
-    "core-icon-button":"Polymer/core-icon#~0.5.4"
+    "core-icon-button":"Polymer/core-icon#~0.5.4",
+    "core-animation": "Polymer/core-animation#^0.5.0",
+    "core-scaffold": "Polymer/core-scaffold#^0.5.0"
   }
 }
