@@ -1,6 +1,6 @@
 <div class="article">
   <h3>
-    <a href="{{ '/articles/' + article._id }}" title="{{ article.title }}">
+    <a href="{{ '/albums/' + article._id }}" title="{{ article.title }}">
       {{ article.title }}
     </a>
   </h3>
@@ -11,7 +11,7 @@
   {% if (article.user) %}
     &nbsp; - &nbsp;
     <span>Author: </span>
-    <a href="{{ '/users/' + article.user._id }}">
+    <a href="{{ '/users/' + albums.user._id }}">
       {{ article.user.name || article.user.username }}
     </a>
   {% endif %}

@@ -1,4 +1,4 @@
-{% extends '../layouts/default.html' %}
+{% extends '../layouts/album.html' %}
 
 {% block main %}
   <h1>{{ article.title }}</h1>
@@ -7,11 +7,18 @@
 {% block content %}
   <style>
   .gridster{
-    height:500px;
+    height:calc(100% + 58px );
+    max-height: 1200px;
+    max-width: 1600px;
+
+    position: relative;
+    top:58px;
   }
-  .gridster div div{
-    
-      background-color: red;
+/*  .gridholder{
+    height:calc(100% + 58px);
+  }*/
+  .gridster{
+      background-color: #eee;
   }
   .gridster [class*="col-"] {
     padding-top: 15px;
@@ -22,86 +29,413 @@
     border: 1px solid rgba(86,61,124,.2);
   }
   .one{
-    width: calc(100% / 3);
+    width: calc(100% / 3 );
     height: calc(100% / 3 * 2);
-    background-color: red;
+    top: 0;
+    left:0;
+    background-position: center 70%;
+    background-size: 250%;
   }
   .two{
+    width: calc(100% / 3*2);
+    height: calc(100% / 3 * 1);
+    left: calc(100% / 3 );
+    top:0px;
+  }
+  .three{
+    width: calc(100% / 3*1);
+    height: calc(100% / 3 * 1);
+    left: calc(100% / 3 );
+    top: calc(100% / 3 );
+
+  }
+  .four{
     width: calc(100% / 3);
     height: calc(100% / 3 * 1);
+    left: calc(100% / 3*2 );
+    top: calc(100% / 3*1 );
     background-color: green;
+  }
+  .five{
+    width: calc(100%);
+    height: calc(100% / 3 * 1);
+    background-color: green;
+    left: 0px;
+    top:calc(100% / 3 *2);
+  }
+  .six{
+    width: calc(100%);
+    height: calc(100% / 3 * 1);
+    background-color: green;
+    left: 0px;
+    top:calc(100% / 3 *3);
+  }
+  .photo{
+    position: absolute;
+    border:1px solid;
+    overflow: hidden;
+   
+  }
+  .photo a img{
+    width: 100%;
+  }
+  .buttom{
+    height:1px;
+  }
+  .menu{
+    position: absolute;
+    height:50px;
+  }
+  .gridster figcaption {
+    display: none;
   }
 
   </style>
-  <div class="gridster">
-      
-<!--     {% for article in "1234567890" %}
-      <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">{{article}}</li>
-    {% endfor %} -->
-      <div class="one">1</div>
-      <div class="two">2</div>
+  <div class="menu"> 
+    <a id="button">Button</a> 
   </div>
-  <div class="row">
-    <div class="col-md-8">
-      <p>{{ article.body }}</p>
-      <div class="meta">
-        {% if (article.user) %}
-          Author: &nbsp;
-          <a href="{{ '/users/' + article.user._id }}">
-            {{ article.user.name || article.user.username }}
-          </a>
-        {% endif %}
-        {% if (article.tags) %}
-          <p>
-            Tags: &nbsp;
-            {% for tag in article.tags.split(',') %}
-              <i class="muted fa fa-tag"></i>&nbsp;
-              <a href="{{ '/tags/ ' + tag }}" class="tag">{{ tag }}</a>
-              &nbsp;&nbsp;
-            {% endfor %}
-          </p>
-        {% endif %}
-        <span class="muted">{{ article.createdAt.toISOString()|date('M d, Y  h:m a') }}</span>
-      </div>
-    </div>
-    <div class="col-md-4">
-      {% if (!article.isNew && article.image && article.image.files && article.image.files.length) %}
-        <img src="{{ article.image.cdnUri + '/mini_' + article.image.files[0] }}" alt="">
-      {% endif %}
-    </div>
-  </div>
+    
+        
+  <!--     {% for article in "1234567890" %}
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">{{article}}</li>
+      {% endfor %} -->
+<!--         <div class="one photo">1</div>
+        <div class="two photo">2</div>
 
-  <form action="{{ '/articles/' + article.id }}" method="post" onsubmit="return confirm('Are you sure?')">
-    <br>
-    <input type="hidden" name="_csrf" value="{{ csrf_token }}">
-    <a href="{{ '/articles/' + article._id + '/edit' }}" title="edit" class="btn btn-default">
-      Edit
-    </a>
-    &nbsp;
-    <input type="hidden" name="_method" value="DELETE">
-    <button class="btn btn-danger" type="submit">Delete</button>
-  </form>
+ -->
 
-  <br>
-  <h3>Comments</h3>
-  {% for comment in article.comments %}
-    {% include '../comments/comment.html' %}
-  {% endfor %}
-  {% include '../comments/form.html' %}
+<!--     <div class="three photo">3</div>
+            <div class="four photo">4</div>
+            <div class="five photo">5</div> -->
+    
+<div class="gridster">
+
+    <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+
+        <figure class="one photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            </a>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>
+
+        <figure class="two photo" itemprop="associatedMedia two photo" itemscope itemtype="http://schema.org/ImageObject">
+            <a href="https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg" itemprop="contentUrl" data-size="1600x1600">
+                <img src="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg" itemprop="thumbnail" alt="Image description" />
+            </a>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>
+
+        <figure class="three photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            </a>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>  
+
+        <figure class="four photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            </a>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>  
+        <figure class="five photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            </a>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>
+        <figure class="six photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            </a>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>      
+
+    </div>
+</div>
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  
 {% endblock %}
+
 {% block subfoot %}
+<!-- Core CSS file -->
+<link rel="stylesheet" href="/js/vendor/photoswipe.css"> 
+
+<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+     In the folder of skin CSS file there are also:
+     - .png and .svg icons sprite, 
+     - preloader.gif (for browsers that do not support CSS animations) -->
+<link rel="stylesheet" href="/js/vendor/default-skin/default-skin.css"> 
+
+<!-- Core JS file -->
+<script src="/js/vendor/photoswipe.min.js"></script> 
+
+<!-- UI JS file -->
+<script src="/js/vendor/photoswipe-ui-default.min.js"></script> 
 <script type="text/javascript">
-  $(function(){ //DOM Ready
- 
-    $(".gridster ul").gridster({
-        widget_margins: [12, 12],
-        widget_base_dimensions: [140, 140],
-        resize: {
-            enabled: true
-        }
-    });
- 
+
+
+$("#button").click(function() {
+    $(".gridster").animate({
+        top: "0px",
+        height:"100%"
+    }, 300);
 });
+
+var initPhotoSwipeFromDOM = function(gallerySelector) {
+
+    // parse slide data (url, title, size ...) from DOM elements 
+    // (children of gallerySelector)
+    var parseThumbnailElements = function(el) {
+        var thumbElements = el.childNodes,
+            numNodes = thumbElements.length,
+            items = [],
+            figureEl,
+            linkEl,
+            size,
+            item;
+
+        for(var i = 0; i < numNodes; i++) {
+
+            figureEl = thumbElements[i]; // <figure> element
+
+            // include only element nodes 
+            if(figureEl.nodeType !== 1) {
+                continue;
+            }
+
+            linkEl = figureEl.children[0]; // <a> element
+
+            size = linkEl.getAttribute('data-size').split('x');
+
+            // create slide object
+            item = {
+                src: linkEl.getAttribute('href'),
+                w: parseInt(size[0], 10),
+                h: parseInt(size[1], 10)
+            };
+
+
+
+            if(figureEl.children.length > 1) {
+                // <figcaption> content
+                item.title = figureEl.children[1].innerHTML; 
+            }
+
+            if(linkEl.children.length > 0) {
+                // <img> thumbnail element, retrieving thumbnail url
+                item.msrc = linkEl.children[0].getAttribute('src');
+            } 
+
+            item.el = figureEl; // save link to element for getThumbBoundsFn
+            items.push(item);
+        }
+
+        return items;
+    };
+
+    // find nearest parent element
+    var closest = function closest(el, fn) {
+        return el && ( fn(el) ? el : closest(el.parentNode, fn) );
+    };
+
+    // triggers when user clicks on thumbnail
+    var onThumbnailsClick = function(e) {
+        e = e || window.event;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+        var eTarget = e.target || e.srcElement;
+
+        // find root element of slide
+        var clickedListItem = closest(eTarget, function(el) {
+            return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+        });
+
+        if(!clickedListItem) {
+            return;
+        }
+
+        // find index of clicked item by looping through all child nodes
+        // alternatively, you may define index via data- attribute
+        var clickedGallery = clickedListItem.parentNode,
+            childNodes = clickedListItem.parentNode.childNodes,
+            numChildNodes = childNodes.length,
+            nodeIndex = 0,
+            index;
+
+        for (var i = 0; i < numChildNodes; i++) {
+            if(childNodes[i].nodeType !== 1) { 
+                continue; 
+            }
+
+            if(childNodes[i] === clickedListItem) {
+                index = nodeIndex;
+                break;
+            }
+            nodeIndex++;
+        }
+
+
+
+        if(index >= 0) {
+            // open PhotoSwipe if valid index found
+            openPhotoSwipe( index, clickedGallery );
+        }
+        return false;
+    };
+
+    // parse picture index and gallery index from URL (#&pid=1&gid=2)
+    var photoswipeParseHash = function() {
+        var hash = window.location.hash.substring(1),
+        params = {};
+
+        if(hash.length < 5) {
+            return params;
+        }
+
+        var vars = hash.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            if(!vars[i]) {
+                continue;
+            }
+            var pair = vars[i].split('=');  
+            if(pair.length < 2) {
+                continue;
+            }           
+            params[pair[0]] = pair[1];
+        }
+
+        if(params.gid) {
+            params.gid = parseInt(params.gid, 10);
+        }
+
+        if(!params.hasOwnProperty('pid')) {
+            return params;
+        }
+        params.pid = parseInt(params.pid, 10);
+        return params;
+    };
+
+    var openPhotoSwipe = function(index, galleryElement, disableAnimation) {
+        var pswpElement = document.querySelectorAll('.pswp')[0],
+            gallery,
+            options,
+            items;
+
+        items = parseThumbnailElements(galleryElement);
+
+        // define options (if needed)
+        options = {
+            index: index,
+
+            // define gallery index (for URL)
+            galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+            getThumbBoundsFn: function(index) {
+                // See Options -> getThumbBoundsFn section of documentation for more info
+                var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+                    pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                    rect = thumbnail.getBoundingClientRect(); 
+
+                return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+            }
+
+        };
+
+        if(disableAnimation) {
+            options.showAnimationDuration = 0;
+        }
+
+        // Pass data to PhotoSwipe and initialize it
+        gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+        gallery.init();
+    };
+
+    // loop through all gallery elements and bind events
+    var galleryElements = document.querySelectorAll( gallerySelector );
+
+    for(var i = 0, l = galleryElements.length; i < l; i++) {
+        galleryElements[i].setAttribute('data-pswp-uid', i+1);
+        galleryElements[i].onclick = onThumbnailsClick;
+    }
+
+    // Parse URL and open gallery if it contains #&pid=3&gid=1
+    var hashData = photoswipeParseHash();
+    if(hashData.pid > 0 && hashData.gid > 0) {
+        openPhotoSwipe( hashData.pid - 1 ,  galleryElements[ hashData.gid - 1 ], true );
+    }
+};
+
+// execute above function
+initPhotoSwipeFromDOM('.my-gallery');
+
+
 </script>
 {% endblock %}
 
