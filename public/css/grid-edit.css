@@ -21,6 +21,30 @@
     margin:0px;
 
 }
+.gridster .gs-w .close-item{
+    margin:5px;
+    font-size: 1.3em;
+    right:0px;
+    position: absolute;
+    color:#999;
+    text-decoration: none;
+    display: none;
+}
+.gridster .gs-w:hover .close-item{
+    display: block;
+}
+
+.gridster .gs-w .position{
+    margin:5px;
+    font-size: 1.1em;
+    color:#999;
+    text-decoration: none;
+    position: absolute;
+    display: none;
+}
+.gridster .gs-w:hover .position{
+    display: block;
+}
 
 /*.gridster .gs-w {
     background: #FFF;
@@ -32,7 +56,7 @@
 .gridster .gs-w {
     background: #FFF;
     overflow: hidden;
-
+    cursor: pointer;
 }
 .shaddow-transition{
     transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1)!important;
@@ -42,6 +66,21 @@
 
 }
 
+.hand{
+    cursor: grab!important;
+    cursor: -webkit-grab!important;
+}
+.unselectable {
+    /* For Opera and <= IE9, we need to add unselectable="on" attribute onto each element */
+    /* Check this site for more details: http://help.dottoro.com/lhwdpnva.php */
+    -moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+    -webkit-user-select: none;
+    -ms-user-select: none; /* From IE10 only */
+    user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+    user-drag: none;
+}
 .gs-resize-handle-both{
     width: 25px;
     height: 25px;

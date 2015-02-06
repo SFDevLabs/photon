@@ -32,7 +32,7 @@
     height:calc(100% + 58px);
   }*/
   .grid{
-      background-color: #eee;
+      background-color: #EAEAEA;
   }
   .grid [class*="col-"] {
     padding-top: 15px;
@@ -97,34 +97,51 @@
   .menu{
     position: absolute;
     height:50px;
+    width: 100%;
+    box-shadow: 0px .1px .2px 0 rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+  .menu .background{
+    background-image:url('/img/matte.png');
+    opacity: .20;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+
+  }
+  .menu .icon{
+    margin:7px;
   }
   .menu-hamburger{
     position: absolute;
-    right:50px;
+    right:25px;
     top:10px;
-    z-index: 3;
+    z-index: 999;
     width: 150px;
     text-align: right;
-    font-size: 1.5em;
+    font-size: 1.6em;
     font-weight: bolder;
+    display: none;
   }
-  /*body:hover .menu-hamburger{
+  body:hover .menu-hamburger{
     display: block;
-  }*/
+  }
   .grid figcaption {
     display: none;
   }
+  
 
   </style>
 
 
   <nav class="menu" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
+    <img class="unselectable icon" src="/img/photon-small.png"></img>    
     <a id="button"> Close </a> 
     <a class="edit-grid"> Edit </a> 
-  
+    <div class="background"></div>
 
-  
-      
   </nav>
 
 <nav class="menu-hamburger" role="navigation" class="" > 
@@ -285,6 +302,7 @@
 <script type="text/javascript">
 
 $("#button").click(function() {
+    $(".menu").css("z-index","-1")
     $(".gridster").animate({
         top: "0px",
     }, 300);
@@ -348,7 +366,7 @@ $("#button").click(function() {
 
         var addAllWidget = function(gridster, serialization){
             $.each(serialization, function() {
-                gridster.add_widget('<li class="new">The HTML of the widget...</li>', this.size_x, this.size_y, this.col, this.row);
+                gridster.add_widget('<li class="new"></li>', this.size_x, this.size_y, this.col, this.row);
             });
         };
         var calculateWidth = function(el, margins){
@@ -389,7 +407,7 @@ $("#button").click(function() {
         }, 500));
         $(".edit-grid").click(function() {
 
-            var editing = toggleEdit(this);            
+            var editing = toggleEdit('.edit-grid');            
             gridster.destroy();
             var newbaseSize = calculateWidth(".gridster",margins)
             gridster = makeGridster(margins, newbaseSize, editing);
@@ -407,9 +425,16 @@ $("#button").click(function() {
             var html = editing?'Stop Editing':'Edit'
             $('.gridster li').addClass('shaddow-transition')
             if (editing){
-                $('.gridster li').addClass('shaddow');                
+                $('.gridster li').addClass('shaddow').addClass('hand');
+                $('.gridster li').prepend('<a href="javascript:void(0)" class="close-item"><i class="fa fa-times"></i></a>')
+                $('.gridster li').prepend('<a class="position" href="javascript:void(0)"><i class="fa fa-arrows "></i></a>')
+
             }else{
-                $('.gridster li').removeClass('shaddow');
+                $('.gridster li').removeClass('shaddow').removeClass('hand'); 
+                $('.gridster li .close-item').remove();
+                $('.gridster li .position').remove();
+
+
             }
             setTimeout(function() {
                 $('.gridster li').removeClass('shaddow-transition')
