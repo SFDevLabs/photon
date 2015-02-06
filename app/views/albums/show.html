@@ -91,9 +91,20 @@
   }
 
   </style>
-  <div class="menu"> 
+  <nav class="menu" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
     <a id="button">Button</a> 
-  </div>
+  
+
+        <a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+          Dropdown
+          <span class="caret"></span>
+        </a>
+        <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="/albums/{{article.id}}/edit">Edit</a></li>
+
+        </ul>
+      
+  </nav>
     
         
   <!--     {% for article in "1234567890" %}
@@ -240,7 +251,7 @@
 <script src="/js/vendor/photoswipe-ui-default.min.js"></script> 
 <script type="text/javascript">
 
-
+$('.dropdown').dropdown()
 $("#button").click(function() {
     $(".gridster").animate({
         top: "0px",
