@@ -1,0 +1,63 @@
+/* Gridster styles */
+.demo {
+    margin: 3em 0;
+    padding: 7.5em 0 5.5em;
+    background: #004756;
+}
+
+.gridster {
+    padding: 5px;
+    top:50px;
+    background-color: #eee;
+    border-bottom: 1px solid #DADADA;
+    overflow: hidden;
+
+}
+
+
+
+.gridster ul, ol {
+    list-style: none;
+    margin:0px;
+
+}
+
+/*.gridster .gs-w {
+    background: #FFF;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}*/
+
+.gridster .gs-w {
+    background: #FFF;
+    overflow: hidden;
+}
+
+/*.gridster .player {
+    -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+}*/
+
+
+.gridster .gs-w.try {
+    background-image: url(../img/sprite.png);
+    background-repeat: no-repeat;
+    background-position: 37px -169px;
+
+}
+
+.gridster .preview-holder {
+    border: none!important;
+    border-radius: 0!important;
+    background: rgba(255,255,255,.2)!important;
+}
+
+
+
+
+
+
+
+
+

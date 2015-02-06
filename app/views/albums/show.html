@@ -1,12 +1,26 @@
 {% extends '../layouts/album.html' %}
 
+
+{% block subhead %}
+<!-- Core CSS file -->
+<link rel="stylesheet" href="/js/vendor/photoswipe.css"> 
+<link rel="stylesheet" href="/css/vendor/jquery.gridster.css"> 
+<link rel="stylesheet" href="/css/grid-edit.css"> 
+
+<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+     In the folder of skin CSS file there are also:
+     - .png and .svg icons sprite, 
+     - preloader.gif (for browsers that do not support CSS animations) -->
+<link rel="stylesheet" href="/js/vendor/default-skin/default-skin.css"> 
+{% endblock %}
+
 {% block main %}
   <h1>{{ article.title }}</h1>
 {% endblock %}
 
 {% block content %}
   <style>
-  .gridster{
+  .grid{
     height:calc(100% + 58px );
     max-height: 1200px;
     max-width: 1600px;
@@ -17,10 +31,10 @@
 /*  .gridholder{
     height:calc(100% + 58px);
   }*/
-  .gridster{
+  .grid{
       background-color: #eee;
   }
-  .gridster [class*="col-"] {
+  .grid [class*="col-"] {
     padding-top: 15px;
     padding-bottom: 15px;
     background-color: #eee;
@@ -33,8 +47,6 @@
     height: calc(100% / 3 * 2);
     top: 0;
     left:0;
-    background-position: center 70%;
-    background-size: 250%;
   }
   .two{
     width: calc(100% / 3*2);
@@ -86,11 +98,13 @@
     position: absolute;
     height:50px;
   }
-  .gridster figcaption {
+  .grid figcaption {
     display: none;
   }
 
   </style>
+
+
   <nav class="menu" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
     <a id="button">Button</a> 
   
@@ -119,7 +133,7 @@
             <div class="four photo">4</div>
             <div class="five photo">5</div> -->
     
-<div class="gridster">
+<div class="grid" style="display:none;">
 
     <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
 
@@ -165,6 +179,14 @@
 
     </div>
 </div>
+
+<div class="gridster">
+    <ul>
+
+    </ul>
+</div>
+
+
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -235,29 +257,126 @@
 {% endblock %}
 
 {% block subfoot %}
-<!-- Core CSS file -->
-<link rel="stylesheet" href="/js/vendor/photoswipe.css"> 
-
-<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
-     In the folder of skin CSS file there are also:
-     - .png and .svg icons sprite, 
-     - preloader.gif (for browsers that do not support CSS animations) -->
-<link rel="stylesheet" href="/js/vendor/default-skin/default-skin.css"> 
 
 <!-- Core JS file -->
 <script src="/js/vendor/photoswipe.min.js"></script> 
 
 <!-- UI JS file -->
-<script src="/js/vendor/photoswipe-ui-default.min.js"></script> 
+<script src="/js/vendor/photoswipe-ui-default.min.js"></script>
+<script src='/js/vendor/jquery.grister.js'></script>
+<script src='/js/vendor/underscore.js'></script>
+
 <script type="text/javascript">
 
 $('.dropdown').dropdown()
 $("#button").click(function() {
-    $(".gridster").animate({
+    $(".grid").animate({
         top: "0px",
         height:"100%"
     }, 300);
 });
+
+    $(function(){
+      var gridster;
+
+      // same object than generated with gridster.serialize() method
+      var serialization = [
+        {
+            col: 1,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 2,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 3,
+            row: 1,
+            size_x: 2,
+            size_y: 1,
+
+        },
+        {
+            col: 5,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 6,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 3,
+            row: 3,
+            size_x: 1,
+            size_y: 1
+        }
+        
+        
+      ];
+
+
+      // sort serialization
+
+
+
+        var addAllWidget = function(gridster, serialization){
+            $.each(serialization, function() {
+                gridster.add_widget('<li class="new">The HTML of the widget...</li>', this.size_x, this.size_y, this.col, this.row);
+            });
+        };
+        var calculateWidth = function(el, margins){
+            var width = $(el).width();
+            var base = (width-(12*margins[0]))/6;
+            //base-=1;//removing padding
+            return base
+        };
+        var makeGridster = function(margins, baseSize){
+            return $(".gridster ul").gridster({
+              widget_base_dimensions: [baseSize, baseSize],
+              widget_margins: margins,
+              resize:{
+                enabled:false
+              }
+            }).data('gridster').disable();
+
+        };
+        var serialization = Gridster.sort_by_row_and_col_asc(serialization);
+        var margins = [.5,.5]
+        var baseSize = calculateWidth(".gridster", margins)
+        var gridster = makeGridster(margins, baseSize);
+
+
+        window.gridster=gridster;
+        $(window).resize(_.debounce(function(){
+
+            gridster.destroy();
+            // gridster.remove_all_widgets();
+             var newbaseSize = calculateWidth(".gridster",margins)
+             makeGridster(margins, newbaseSize)
+            // gridster.options.widget_base_dimensions=[newbaseSize,newbaseSize]
+            // addAllWidget(gridster ,serialization);
+            // gridster.$el.width( gridster.$wrapper.width()-20 );
+
+        }, 500));
+
+        addAllWidget(gridster ,serialization);
+
+        //$('.js-seralize').on('click', function() {
+        //});
+
+      });
 
 var initPhotoSwipeFromDOM = function(gallerySelector) {
 

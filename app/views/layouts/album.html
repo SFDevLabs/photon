@@ -1,4 +1,5 @@
   {% include '../includes/head.html' %}
+  {% block subhead %}{% endblock %}
 
   <body>
       
@@ -9,7 +10,8 @@
       </div>
     {% include '../includes/footer.html' %}
     {% include '../includes/foot.html' %}
-    {% block subfoot %}{% endblock %}
+    {% block subfoot %}
+    {% endblock %}
   </body>
 </html>
 
