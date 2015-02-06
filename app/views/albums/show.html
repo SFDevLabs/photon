@@ -113,6 +113,7 @@
   }
   .menu .icon{
     margin:7px;
+    height: 40px;
   }
   .menu-hamburger{
     position: absolute;
@@ -145,73 +146,14 @@
   </nav>
 
 <nav class="menu-hamburger" role="navigation" class="" > 
+    <a id="drop2" href="javascript:void(0)" class="dropdown-toggle right" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+    <i class="fa fa-bars"></i>
+    </a>
+    <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+      <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="javascript:void(0)">Edit</a></li>
 
-<a id="drop2" href="javascript:void(0)" class="dropdown-toggle right" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-<i class="fa fa-bars"></i>
-</a>
-<ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-  <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="javascript:void(0)">Edit</a></li>
-
-</ul>
-    </nav>      
-  <!--     {% for article in "1234567890" %}
-        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">{{article}}</li>
-      {% endfor %} -->
-<!--         <div class="one photo">1</div>
-        <div class="two photo">2</div>
-
- -->
-
-<!--     <div class="three photo">3</div>
-            <div class="four photo">4</div>
-            <div class="five photo">5</div> -->
-    
-<div class="grid" style="display:none;">
-
-    <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-
-        <figure class="one photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
-                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
-            </a>
-            <figcaption itemprop="caption description">Image caption</figcaption>
-        </figure>
-
-        <figure class="two photo" itemprop="associatedMedia two photo" itemscope itemtype="http://schema.org/ImageObject">
-            <a href="https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg" itemprop="contentUrl" data-size="1600x1600">
-                <img src="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg" itemprop="thumbnail" alt="Image description" />
-            </a>
-            <figcaption itemprop="caption description">Image caption</figcaption>
-        </figure>
-
-        <figure class="three photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
-                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
-            </a>
-            <figcaption itemprop="caption description">Image caption</figcaption>
-        </figure>  
-
-        <figure class="four photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
-                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
-            </a>
-            <figcaption itemprop="caption description">Image caption</figcaption>
-        </figure>  
-        <figure class="five photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
-                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
-            </a>
-            <figcaption itemprop="caption description">Image caption</figcaption>
-        </figure>
-        <figure class="six photo"itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
-                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
-            </a>
-            <figcaption itemprop="caption description">Image caption</figcaption>
-        </figure>      
-
-    </div>
-</div>
+    </ul>
+</nav>      
 
 <div class="gridster">
     <ul class="gallery">
