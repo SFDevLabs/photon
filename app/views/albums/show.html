@@ -128,7 +128,7 @@
   body:hover .menu-hamburger{
     display: block;
   }
-  .grid figcaption {
+  .gridster figcaption {
     display: none;
   }
   
@@ -146,11 +146,11 @@
 
 <nav class="menu-hamburger" role="navigation" class="" > 
 
-<a id="drop2" href="#" class="dropdown-toggle right" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+<a id="drop2" href="javascript:void(0)" class="dropdown-toggle right" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
 <i class="fa fa-bars"></i>
 </a>
 <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-  <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="#">Edit</a></li>
+  <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="javascript:void(0)">Edit</a></li>
 
 </ul>
     </nav>      
@@ -214,7 +214,7 @@
 </div>
 
 <div class="gridster">
-    <ul>
+    <ul class="gallery">
 
     </ul>
 </div>
@@ -299,6 +299,15 @@
 <script src='/js/vendor/jquery.grister.js'></script>
 <script src='/js/vendor/underscore.js'></script>
 
+<script id="figureTmpl" type="text/template">
+    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+            <span href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+                <img ondragstart="return false;" style="margin-top:-50px; margin-left:-20px" class="unselectable" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            </span>
+            <figcaption itemprop="caption description">Image caption</figcaption>
+        </figure>
+</script>
+
 <script type="text/javascript">
 
 $("#button").click(function() {
@@ -307,6 +316,22 @@ $("#button").click(function() {
         top: "0px",
     }, 300);
 });
+
+
+var makeUnselectable = function( $target ) {
+    $target
+        .addClass( 'unselectable' ) // All these attributes are inheritable
+        .attr( 'unselectable', 'on' ) // For IE9 - This property is not inherited, needs to be placed onto everything
+        .attr( 'draggable', 'false' ) // For moz and webkit, although Firefox 16 ignores this when -moz-user-select: none; is set, it's like these properties are mutually exclusive, seems to be a bug.
+        .on( 'dragstart', function() { return false; } );  // Needed since Firefox 16 seems to ingore the 'draggable' attribute we just applied above when '-moz-user-select: none' is applied to the CSS 
+
+    $target // Apply non-inheritable properties to the child elements
+        .find( '*' )
+        .attr( 'draggable', 'false' )
+        .attr( 'unselectable', 'on' ); 
+};
+makeUnselectable($('.gallery img'))
+
 
 
     $(function(){
@@ -363,10 +388,10 @@ $("#button").click(function() {
       // sort serialization
 
 
-
+        var tmpl=$("#figureTmpl").text();
         var addAllWidget = function(gridster, serialization){
             $.each(serialization, function() {
-                gridster.add_widget('<li class="new"></li>', this.size_x, this.size_y, this.col, this.row);
+                gridster.add_widget('<li class="new">'+tmpl+'</li>', this.size_x, this.size_y, this.col, this.row);
             });
         };
         var calculateWidth = function(el, margins){
@@ -384,6 +409,7 @@ $("#button").click(function() {
                 enabled:edit?true:false
               }
             }).data('gridster')
+
             if (!edit){grid.disable(),$('.gs-resize-handle').remove();}
             return grid
         };
@@ -444,8 +470,28 @@ $("#button").click(function() {
             return editing;
         }
 
+        var initSwipe = function(gridster, serialization){
+
+            if (gridster.$widgets.length===serialization.length){
+                initPhotoSwipeFromDOM('.gallery');
+            } else{
+                setTimeout(function(){
+                    initSwipe(gridster, serialization);
+                },500)
+            }
+        }
 
         addAllWidget(gridster ,serialization);
+
+        initPhotoSwipeFromDOM('.gallery');
+        // $(".gridster img").on('drag',function(event){
+        //     event.preventDefault()
+        //     return false;
+        // })
+        //  $(".gallery figure span").click(function(event){
+        //     event.preventDefault()
+        //     return
+        // });
 
         //$('.js-seralize').on('click', function() {
         //});
@@ -457,7 +503,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
     // parse slide data (url, title, size ...) from DOM elements 
     // (children of gallerySelector)
     var parseThumbnailElements = function(el) {
-        var thumbElements = el.childNodes,
+        var thumbElements = $(el).find('figure'),//I know I'm adding jqeary
             numNodes = thumbElements.length,
             items = [],
             figureEl,
@@ -514,31 +560,39 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
         e = e || window.event;
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
+        if (!$(".edit-grid").data('editing')){
+            return false;
+        }
+        
+
         var eTarget = e.target || e.srcElement;
 
         // find root element of slide
-        var clickedListItem = closest(eTarget, function(el) {
-            return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
-        });
+        var clickedGallery = $(eTarget).closest('ul')
+        var clickedListItems = $(eTarget).closest('ul').find('figure')
+        var clickedItem = $(eTarget).closest('figure')[0]
+        // var clickedListItem = closest(eTarget, function(el) {
+        //     return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+        // });
 
-        if(!clickedListItem) {
+        if(!clickedListItems) {
             return;
         }
 
         // find index of clicked item by looping through all child nodes
         // alternatively, you may define index via data- attribute
-        var clickedGallery = clickedListItem.parentNode,
-            childNodes = clickedListItem.parentNode.childNodes,
-            numChildNodes = childNodes.length,
-            nodeIndex = 0,
-            index;
+         
+        // var childNodes = clickedListItem.parentNode.childNodes,
+        //     numChildNodes = childNodes.length,
+        var nodeIndex = 0;
+        //     index;
 
-        for (var i = 0; i < numChildNodes; i++) {
-            if(childNodes[i].nodeType !== 1) { 
+        for (var i = 0; i < clickedListItems.length; i++) {
+            if(clickedListItems[i].nodeType !== 1) { 
                 continue; 
             }
 
-            if(childNodes[i] === clickedListItem) {
+            if(clickedListItems[i] === clickedItem) {
                 index = nodeIndex;
                 break;
             }
@@ -549,7 +603,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 
         if(index >= 0) {
             // open PhotoSwipe if valid index found
-            openPhotoSwipe( index, clickedGallery );
+            openPhotoSwipe( index, clickedGallery[0] );
         }
         return false;
     };
@@ -626,8 +680,9 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 
     for(var i = 0, l = galleryElements.length; i < l; i++) {
         galleryElements[i].setAttribute('data-pswp-uid', i+1);
-        galleryElements[i].onclick = onThumbnailsClick;
+        galleryElements[i].onclick = onThumbnailsClick
     }
+
 
     // Parse URL and open gallery if it contains #&pid=3&gid=1
     var hashData = photoswipeParseHash();
@@ -636,9 +691,13 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
     }
 };
 
-// execute above function
-initPhotoSwipeFromDOM('.my-gallery');
 
+
+
+// execute above function
+ //initPhotoSwipeFromDOM('.gallery');
+
+// initPhotoSwipeFromDOM('.my-gallery');
 
 </script>
 {% endblock %}
