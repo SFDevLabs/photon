@@ -98,6 +98,19 @@
     position: absolute;
     height:50px;
   }
+  .menu-hamburger{
+    position: absolute;
+    right:50px;
+    top:10px;
+    z-index: 3;
+    width: 150px;
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bolder;
+  }
+  /*body:hover .menu-hamburger{
+    display: block;
+  }*/
   .grid figcaption {
     display: none;
   }
@@ -106,21 +119,24 @@
 
 
   <nav class="menu" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
-    <a id="button">Button</a> 
+    <a id="button"> Close </a> 
+    <a class="edit-grid"> Edit </a> 
   
 
-        <a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-          Dropdown
-          <span class="caret"></span>
-        </a>
-        <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/albums/{{article.id}}/edit">Edit</a></li>
-
-        </ul>
+  
       
   </nav>
-    
-        
+
+<nav class="menu-hamburger" role="navigation" class="" > 
+
+<a id="drop2" href="#" class="dropdown-toggle right" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+<i class="fa fa-bars"></i>
+</a>
+<ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+  <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="#">Edit</a></li>
+
+</ul>
+    </nav>      
   <!--     {% for article in "1234567890" %}
         <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">{{article}}</li>
       {% endfor %} -->
@@ -268,13 +284,12 @@
 
 <script type="text/javascript">
 
-$('.dropdown').dropdown()
 $("#button").click(function() {
-    $(".grid").animate({
+    $(".gridster").animate({
         top: "0px",
-        height:"100%"
     }, 300);
 });
+
 
     $(function(){
       var gridster;
@@ -342,18 +357,20 @@ $("#button").click(function() {
             //base-=1;//removing padding
             return base
         };
-        var makeGridster = function(margins, baseSize){
-            return $(".gridster ul").gridster({
+        var makeGridster = function(margins, baseSize, edit){
+             
+            var grid = $(".gridster ul").gridster({
               widget_base_dimensions: [baseSize, baseSize],
               widget_margins: margins,
               resize:{
-                enabled:false
+                enabled:edit?true:false
               }
-            }).data('gridster').disable();
-
+            }).data('gridster')
+            if (!edit){grid.disable(),$('.gs-resize-handle').remove();}
+            return grid
         };
         var serialization = Gridster.sort_by_row_and_col_asc(serialization);
-        var margins = [.5,.5]
+        var margins = [1,1]
         var baseSize = calculateWidth(".gridster", margins)
         var gridster = makeGridster(margins, baseSize);
 
@@ -361,6 +378,7 @@ $("#button").click(function() {
         window.gridster=gridster;
         $(window).resize(_.debounce(function(){
 
+            toggleEdit(".edit-grid",false);
             gridster.destroy();
             // gridster.remove_all_widgets();
              var newbaseSize = calculateWidth(".gridster",margins)
@@ -368,8 +386,39 @@ $("#button").click(function() {
             // gridster.options.widget_base_dimensions=[newbaseSize,newbaseSize]
             // addAllWidget(gridster ,serialization);
             // gridster.$el.width( gridster.$wrapper.width()-20 );
-
         }, 500));
+        $(".edit-grid").click(function() {
+
+            var editing = toggleEdit(this);            
+            gridster.destroy();
+            var newbaseSize = calculateWidth(".gridster",margins)
+            gridster = makeGridster(margins, newbaseSize, editing);
+        });
+        $(".edit-grid").data('editing',true);
+
+        var toggleEdit = function(el, setter){
+            if (setter!==undefined){
+                var editing = setter;
+            }else{
+                var editing = $(el).data('editing');
+                $(el).data('editing', !editing);
+            }
+            
+            var html = editing?'Stop Editing':'Edit'
+            $('.gridster li').addClass('shaddow-transition')
+            if (editing){
+                $('.gridster li').addClass('shaddow');                
+            }else{
+                $('.gridster li').removeClass('shaddow');
+            }
+            setTimeout(function() {
+                $('.gridster li').removeClass('shaddow-transition')
+            }, 1000);
+            
+            $(el).html(html);
+            return editing;
+        }
+
 
         addAllWidget(gridster ,serialization);
 
