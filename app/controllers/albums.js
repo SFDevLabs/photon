@@ -76,7 +76,7 @@ exports.create = function (req, res) {
   article.save(function (err) {
     if (!err) {
       req.flash('success', 'Successfully created article!');
-      return res.redirect('/albums/'+article._id);
+      return res.redirect('/'+article._id);
     }
     console.log(err);
     res.render('albums/new', {
@@ -114,7 +114,7 @@ exports.update = function (req, res){
 
   article.uploadAndSave(images, function (err) {
     if (!err) {
-      return res.redirect('/albums/' + article._id);
+      return res.redirect('/' + article._id);
     }
 
     res.render('albums/edit', {

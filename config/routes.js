@@ -95,13 +95,13 @@ module.exports = function (app, passport) {
 
   // article routes
   app.param('id', albums.load);
-  app.get('/albums', albums.index);
-  app.get('/albums/new', auth.requiresLogin, albums.new);
-  app.post('/albums', auth.requiresLogin, albums.create);
-  app.get('/albums/:id', albums.show);
-  app.get('/albums/:id/edit', articleAuth, albums.edit);
-  app.put('/albums/:id', articleAuth, albums.update);
-  app.delete('/albums/:id', articleAuth, albums.destroy);
+  app.get('/', albums.index);
+  app.get('/new', auth.requiresLogin, albums.new);
+  app.post('/', auth.requiresLogin, albums.create);
+  app.get('/:id', albums.show);
+  app.get('/:id/edit', articleAuth, albums.edit);
+  app.put('/:id', articleAuth, albums.update);
+  app.delete('/:id', articleAuth, albums.destroy);
 
   // home route
   app.get('/', albums.index);
