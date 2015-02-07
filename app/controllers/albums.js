@@ -87,6 +87,23 @@ exports.create = function (req, res) {
   });
 };
 
+/*
+ * upload Image
+ */
+exports.uploadImage = function(req, res){
+  var article = req.article;
+  var files = req.files.files;
+
+  if (!files || files.length===0){ return res.send([])};
+
+  article.uploadAndSave(files, req.user.id, function(err) {
+      if (!err) {
+       return res.send(article.images)
+       // return res.redirect('/articles/' + article._id)
+      }
+    });
+};
+
 /**
  * Edit an article
  */

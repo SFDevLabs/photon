@@ -1,36 +1,44 @@
-
-/**
- * Expose
- */
-
 module.exports = {
   variants: {
     article: {
       resize: {
-        detail: 'x440'
+        detail: "800x600"
       },
       crop: {
-
+        
       },
       resizeAndCrop: {
-        mini: { resize: '63504@', crop: '252x210' }
+        thumb: {resize: "133x133", crop: "100x100"}
       }
     },
-
-    gallery: {
+    user: {
+      resize: {
+        user_thumb: "250x250"
+      },
       crop: {
-        thumb: '100x100'
+        
+      },
+      resizeAndCrop: {
       }
     }
   },
 
   storage: {
+    Rackspace: {
+      auth: {
+        username: "USERNAME",
+        apiKey: "API_KEY",
+        host: "lon.auth.api.rackspacecloud.com"
+      },
+      container: "CONTAINER_NAME"
+    },
     S3: {
-      key: process.env.IMAGER_S3_KEY,
-      secret: process.env.IMAGER_S3_SECRET,
-      bucket: process.env.IMAGER_S3_BUCKET
+      key: 'AKIAIKKZK32GLXFHM2YQ',
+      secret: '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',
+      bucket: 'img.tryphoton.com',
+     // region: 'US Standard'
     }
   },
 
-  debug: true
+  debug: false
 }
