@@ -86,18 +86,23 @@ AlbumSchema.methods = {
    * @api private
    */
   uploadAndSave: function (images, userId, cb) {
+
     var imager = new Imager(imagerConfig, 'S3');
     var self = this;
+
     this.validate(function (err) {
       if (err) return cb(err);
       imager.upload(images, function (err, cdnUri, files) {
         if (err) return cb(err);
+        console.log(err, cdnUri, files)
         if (files.length) {
-          files.forEach(function(val){
-            self.images.push({ cdnUri : cdnUri, file : val, user:userId});
-          });
+          // files.forEach(function(val){
+          //   self.images.push({ cdnUri : cdnUri, file : val, user:userId});
+          // });
         }
-        self.save(cb);
+        console.log(err, cdnUri, files)
+        cb(null,{})
+        //self.save(cb);
       }, 'article');
     });
   },

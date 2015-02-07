@@ -161,11 +161,36 @@
 
     </ul>
 </div>
-<form action="/54d182a06cb2020000572620/upload"
+
+<div style="bottom: 0; width:100%;
+position: fixed;">
+
+<form 
+      style="padding-bottom:100px;"
+      action="/54d182a06cb2020000572620/upload"
       class="dropzone"
-      id="my-awesome-dropzone"
-      style="bottom: 0;
-position: absolute;"></form>
+      id="my-awesome-dropzone">
+      <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+</form>
+
+</div>
+
+
+<!-- <div style="bottom: 0;
+position: absolute;">
+
+    <p>
+      <input id="fileuploadimage" type="file" name="files[]" multiple="multiple" class="file-uploader"/>
+    </p>
+    <div id="dropzoneimage"><span class="typcn typcn-folder-open"></span>
+      <div class="muted text">Drag and drop image files here</div>
+    </div>
+    <div id="files" class="files"></div>
+
+    
+</div> -->
+
+
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -240,7 +265,14 @@ position: absolute;"></form>
 
 <!-- Core JS file -->
 <script src="/js/vendor/photoswipe.min.js"></script> 
+
+
 <script src="/js/vendor/dropzone.js"></script>
+
+<script src="/js/vendor/jquery.ui.widget.js"></script>
+<script src="/js/vendor/jquery.iframe-transport.js"></script>
+<script src="/js/vendor/jquery.fileupload.js"></script>
+
 <!-- UI JS file -->
 <script src="/js/vendor/photoswipe-ui-default.min.js"></script>
 <script src='/js/vendor/jquery.grister.js'></script>
@@ -256,6 +288,31 @@ position: absolute;"></form>
 </script>
 
 <script type="text/javascript">
+
+
+// $('#fileuploadimage').fileupload({
+//         url: '/{{article.id}}/upload'
+//         ,dataType: 'json'
+//         ,autoUpload: true
+//         ,dropZone: $('#dropzoneimage')
+//         ,formData: [
+//          { name: '_csrf', value: "{{ csrf_token }}" }
+//         ]
+//       //  acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+//         ,maxFileSize: 20000000 // 5 MB
+//         // Enable image resizing, except for Android and Opera,
+//         // which actually support image resizing, but fail to
+//         // send Blob objects via XHR requests:
+//         ,disableImageResize: /Android(?!.*Chrome)|Opera/
+//             .test(window.navigator.userAgent)
+//         ,previewMaxWidth: 100
+//         ,previewMaxHeight: 100
+//         ,previewCrop: true
+//     }).on('fileuploaddone', function (e, data) {
+
+//     });
+
+
 
 $("#button").click(function() {
     $(".menu").css("z-index","-1")
@@ -637,9 +694,6 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
         openPhotoSwipe( hashData.pid - 1 ,  galleryElements[ hashData.gid - 1 ], true );
     }
 };
-
-
-
 
 // execute above function
  //initPhotoSwipeFromDOM('.gallery');

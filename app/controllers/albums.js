@@ -91,15 +91,24 @@ exports.create = function (req, res) {
  * upload Image
  */
 exports.uploadImage = function(req, res){
-  var article = req.article;
-  var files = req.files.files;
+  var album = req.album;
+  var files = req.files.file.path;
+  var patternFileExt=/\.[0-9a-z]+$/i
+  if( files.match(patternFileExt)[0]!=='.jpg' && files.match(patternFileExt)[0]!=='.jpeg'){
+    return res.send(415,'Unsupported file type. Please Upload a "jpeg" or "jpg" image.')
+  }
 
+  //return res.send('nada')
+
+
+  //return res.send(req.files.file)
   if (!files || files.length===0){ return res.send([])};
 
-  article.uploadAndSave(files, req.user.id, function(err) {
+  album.uploadAndSave(files, req.user.id, function(err) {
       if (!err) {
-       return res.send(article.images)
-       // return res.redirect('/articles/' + article._id)
+       return res.send(req.album)
+      }else{
+        return res.send(err)
       }
     });
 };

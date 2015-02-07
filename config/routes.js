@@ -103,6 +103,11 @@ module.exports = function (app, passport) {
   app.put('/:id', articleAuth, albums.update);
   app.delete('/:id', articleAuth, albums.destroy);
 
+
+  app.post('/:id/upload', albums.uploadImage);
+
+  
+
   // home route
   app.get('/', albums.index);
 

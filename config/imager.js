@@ -22,7 +22,6 @@ module.exports = {
       }
     }
   },
-
   storage: {
     Rackspace: {
       auth: {
@@ -33,8 +32,8 @@ module.exports = {
       container: "CONTAINER_NAME"
     },
     S3: {
-      key: 'AKIAIKKZK32GLXFHM2YQ',
-      secret: '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',
+      key: 'AKIAJMVXXC2LK6KGWGIQ',
+      secret: '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',
       bucket: 'img.tryphoton.com',
      // region: 'US Standard'
     }
