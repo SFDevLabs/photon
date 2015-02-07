@@ -12,6 +12,8 @@
      - .png and .svg icons sprite, 
      - preloader.gif (for browsers that do not support CSS animations) -->
 <link rel="stylesheet" href="/js/vendor/default-skin/default-skin.css"> 
+<link rel="stylesheet" href="/css/vendor/dropzone.css"> 
+
 {% endblock %}
 
 {% block main %}
@@ -142,7 +144,6 @@
     <a id="button"> Close </a> 
     <a class="edit-grid"> Edit </a> 
     <div class="background"></div>
-
   </nav>
 
 <nav class="menu-hamburger" role="navigation" class="" > 
@@ -160,7 +161,11 @@
 
     </ul>
 </div>
-
+<form action="/54d182a06cb2020000572620/upload"
+      class="dropzone"
+      id="my-awesome-dropzone"
+      style="bottom: 0;
+position: absolute;"></form>
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -235,7 +240,7 @@
 
 <!-- Core JS file -->
 <script src="/js/vendor/photoswipe.min.js"></script> 
-
+<script src="/js/vendor/dropzone.js"></script>
 <!-- UI JS file -->
 <script src="/js/vendor/photoswipe-ui-default.min.js"></script>
 <script src='/js/vendor/jquery.grister.js'></script>
