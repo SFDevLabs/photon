@@ -16,7 +16,6 @@ exports.load = function (req, res, next, id){
   var User = mongoose.model('User');
 
   Album.load(id, function (err, album) {
-    console.log(album, err)
     if (err) return next(err);
     if (!album) return next(new Error('not found'));
     req.album = album;
@@ -93,7 +92,9 @@ exports.uploadImage = function(req, res){
   var album = req.album;
   var files = req.files.file.path;
   var patternFileExt=/\.[0-9a-z]+$/i
-  if( files.match(patternFileExt)[0]!=='.jpg' && files.match(patternFileExt)[0]!=='.jpeg'){
+
+  var matcher = files.match(patternFileExt)[0];
+  if( matcher && matcher.toLowerCase()!=='.jpg' && matcher.toLowerCase()!=='.jpeg'){
     return res.send(415,'Unsupported file type. Please Upload a "jpeg" or "jpg" image.')
   }
 
@@ -147,10 +148,11 @@ exports.update = function (req, res){
 };
 
 /**
- * Show
+ * API
  */
 
 exports.widgets = function(req, res){
+
 
   var widgets = [
         {
