@@ -150,10 +150,58 @@ exports.update = function (req, res){
  * Show
  */
 
+exports.widgets = function(req, res){
+
+  var widgets = [
+        {
+            col: 1,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 2,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 3,
+            row: 1,
+            size_x: 2,
+            size_y: 1,
+
+        },
+        {
+            col: 5,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 6,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+
+        },
+        {
+            col: 3,
+            row: 3,
+            size_x: 1,
+            size_y: 1
+        }
+      ];
+      res.json(widgets)
+
+}
 exports.show = function (req, res){
   res.render('albums/show', {
     title: req.album.title,
-    album: req.album
+    album: req.album,
   });
 };
 

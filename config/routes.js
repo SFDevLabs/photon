@@ -105,6 +105,8 @@ module.exports = function (app, passport) {
 
   app.post('/:id/upload', albums.uploadImage);
 
+  //API
+  app.get('/:id/widgets', albums.widgets);
   
 
   // home route
