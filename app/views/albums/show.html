@@ -316,15 +316,19 @@ $(".menu-toggle").click(function() {
             top: "0px",
         }, 300, function(){
             $menu.removeClass('open')
+
         });
+        $(".menu").hide("fast")
         
     } else {
         $(".gridster").animate({
             top: "50px",
+            
         }, 300, function(){
             $menu.css("z-index","")
         }); 
-        $menu.addClass('open') 
+        $menu.addClass('open')
+        $(".menu").show("fast")
     }
 });
 
@@ -414,7 +418,10 @@ $(function(){
             type: "GET"
           }).done(function(req) {
             initGrid(req)
-            initPhotoSwipeFromDOM('.gallery');
+            setTimeout(function(){
+              initPhotoSwipeFromDOM('.gallery');
+            },500);//I know bad jst will testing is over.
+            
           });
         };
 
