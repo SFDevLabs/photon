@@ -2,13 +2,16 @@ module.exports = {
   variants: {
     article: {
       resize: {
-        detail: "800x600"
+        med: "800x600"
+      },
+      original: {
+        org: true
       },
       crop: {
         
       },
-      resizeAndCrop: {
-        thumb: {resize: "133x133", crop: "100x100"}
+      thumbnail: {
+        better_thumb_center: "100x100 Center"
       }
     },
     user: {
