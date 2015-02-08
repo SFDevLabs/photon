@@ -195,9 +195,71 @@ exports.widgets = function(req, res){
             size_y: 1
         }
       ];
-      res.json(widgets)
+      res.json(req.album.widgets)
 
 }
+exports.newWidget=function(req, res){
+  var album = req.album
+  album.widgets.push({
+            col: 1,
+            row: 1,
+            size_x: 1,
+            size_y: 1,
+        });
+  album.save(function(err){
+    if (!err) {
+      return res.json({success:true})
+    };
+    req.flash('error', err);
+    return res.redirect('/'+album._id);
+
+    
+  });
+};
+
+exports.removeWidget=function(req, res){
+  var album = req.album
+};
+exports.removeAllWidget=function(req, res){
+  var album = req.album
+  album.widgets=[];
+  album.save(function(err){
+    if (!err) {
+      return res.json({success:true})
+    };
+    req.flash('error', err);
+    return res.redirect('/'+album._id);
+  });
+};
+
+
+
+exports.updateWidget=function(req, res){
+  var album = req.album
+  
+  //we loop the widget lsit and extend them one by one
+  for (var i = album.widgets.length - 1; i >= 0; i--) {
+    var bodyW = req.body.widgets[i]
+    var albumW = album.widgets[i]
+    album.widgets[i]=extend(albumW, bodyW);
+  };
+  
+  album.save(function(err){
+    if (!err) {
+      return res.json({success:true})
+    };
+    req.flash('error', err);
+    return res.redirect('/'+album._id);
+    
+  });
+};
+
+//end api
+
+
+/**
+ * Show
+ */
 exports.show = function (req, res){
   res.render('albums/show', {
     title: req.album.title,
