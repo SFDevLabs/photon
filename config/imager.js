@@ -2,10 +2,8 @@ module.exports = {
   variants: {
     article: {
       resize: {
-        med: "800x600"
-      },
-      original: {
-        org: true
+        med: "800x600",
+        org: "100%"
       },
       crop: {
         
