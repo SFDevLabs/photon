@@ -35,18 +35,18 @@ var setTags = function (tags) {
 var AlbumSchema = new Schema({
   title: {type : String, default : '', trim : true},
   body: {type : String, default : '', trim : true},
+  url  : {type : Date, default : Date.now},
   user: {type : Schema.ObjectId, ref : 'User'},
   comments: [{
     body: { type : String, default : '' },
     user: { type : Schema.ObjectId, ref : 'User' },
     createdAt: { type : Date, default : Date.now }
   }],
-  tags: {type: [], get: getTags, set: setTags},
-  image: {
+  images: [{
     cdnUri: String,
-    files: []
-  },
-  createdAt  : {type : Date, default : Date.now}
+    fileName: String
+  }],
+  createdAt  : {type : Date, default : Date.now},
 });
 
 /**
@@ -54,7 +54,6 @@ var AlbumSchema = new Schema({
  */
 
 AlbumSchema.path('title').required(true, 'Article title cannot be blank');
-AlbumSchema.path('body').required(true, 'Article body cannot be blank');
 
 /**
  * Pre-remove hook
@@ -94,13 +93,13 @@ AlbumSchema.methods = {
       if (err) return cb(err);
       imager.upload(images, function (err, cdnUri, files) {
         if (err) return cb(err);
-        console.log(err, cdnUri, files)
+        //console.log(err, cdnUri, files)
         if (files.length) {
           // files.forEach(function(val){
           //   self.images.push({ cdnUri : cdnUri, file : val, user:userId});
           // });
         }
-        console.log(err, cdnUri, files)
+        //console.log(err, cdnUri, files)
         cb(null,{})
         //self.save(cb);
       }, 'article');

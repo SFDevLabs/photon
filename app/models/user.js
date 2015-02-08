@@ -5,6 +5,8 @@
 
 var mongoose = require('mongoose');
 var crypto = require('crypto');
+var utils = require('../../lib/utils')
+
 
 var Schema = mongoose.Schema;
 var oAuthTypes = [
@@ -57,15 +59,15 @@ var validatePresenceOf = function (value) {
 
 // the below 5 validations only apply if you are signing up traditionally
 
-UserSchema.path('name').validate(function (name) {
-  if (this.skipValidation()) return true;
-  return name.length;
-}, 'Name cannot be blank');
-
 UserSchema.path('email').validate(function (email) {
   if (this.skipValidation()) return true;
   return email.length;
 }, 'Email cannot be blank');
+
+UserSchema.path('email').validate(function (email) {
+  if (this.skipValidation()) return true;
+  if (email.length===0){return true}else{return utils.validateEmail(email)}
+}, 'Email is not valid');
 
 UserSchema.path('email').validate(function (email, fn) {
   var User = mongoose.model('User');
@@ -77,12 +79,24 @@ UserSchema.path('email').validate(function (email, fn) {
       fn(!err && users.length === 0);
     });
   } else fn(true);
-}, 'Email already exists');
+}, 'Email is not available');
 
 UserSchema.path('username').validate(function (username) {
   if (this.skipValidation()) return true;
   return username.length;
 }, 'Username cannot be blank');
+
+UserSchema.path('username').validate(function (username, fn) {
+  var User = mongoose.model('User');
+  if (this.skipValidation()) fn(true);
+
+  // Check only when it is a new user or when email field is modified
+  if (this.isNew || this.isModified('username')) {
+    User.find({ username: username }).exec(function (err, users) {
+      fn(!err && users.length === 0);
+    });
+  } else fn(true);
+}, 'Username is not available');
 
 UserSchema.path('hashed_password').validate(function (hashed_password) {
   if (this.skipValidation()) return true;

@@ -39,18 +39,19 @@ describe('Users', function () {
         .end(done)
       })
 
-      it('no name - should respond with errors', function (done) {
+      it('invalid email - should respond with errors', function (done) {
         request(app)
         .post('/users')
-        .field('name', '')
+        .field('name', 'Foo bar')
         .field('username', 'foobar')
-        .field('email', 'foobar@example.com')
+        .field('email', 'invalid.email')
         .field('password', 'foobar')
         .expect('Content-Type', /html/)
         .expect(200)
-        .expect(/Name cannot be blank/)
+        .expect(/Email is not valid/)
         .end(done)
       })
+
 
       it('should not save the user to the database', function (done) {
         User.count(function (err, cnt) {
@@ -68,7 +69,7 @@ describe('Users', function () {
         })
       })
 
-      it('should redirect to /articles', function (done) {
+      it('should redirect to /', function (done) {
         request(app)
         .post('/users')
         .field('name', 'Foo bar')
