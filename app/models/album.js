@@ -51,17 +51,17 @@ var AlbumSchema = new Schema({
     createdAt: { type : Date, default : Date.now }
   }],
   widgets:[{
-            col: { type : Number, default : null },
-            row: { type : Number, default : null },
-            size_x: { type : Number, default : null },
-            size_y: { type : Number, default : null },
-            offset_x: { type : Number, default : null },
-            offset_y: { type : Number, default : null },
-            caption: { type : Date, default : null },
-            location: [{ type : Number, default : null }, { type : Number, default : null }],
-            type: {type : String, default : '', trim : true},
-            mediaIndex: { type : Number, default : null },
-            createdAt: { type : Date, default : Date.now }
+    col: { type : Number, default : null },
+    row: { type : Number, default : null },
+    size_x: { type : Number, default : null },
+    size_y: { type : Number, default : null },
+    offset_x: { type : Number, default : null },
+    offset_y: { type : Number, default : null },
+    caption: { type : Date, default : null },
+    location: [{ type : Number, default : null }, { type : Number, default : null }],
+    type: {type : String, default : '', trim : true},
+    mediaIndex: { type : Number, default : null },
+    createdAt: { type : Date, default : Date.now }
   }],
   createdAt  : {type : Date, default : Date.now}
 });
