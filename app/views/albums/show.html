@@ -117,6 +117,9 @@
     margin:7px;
     height: 40px;
   }
+  .menu a{
+    padding: 0px 15px;
+  }
   .menu-hamburger{
     position: absolute;
     right:25px;
@@ -127,6 +130,9 @@
     font-size: 1.6em;
     font-weight: bolder;
     display: none;
+  }
+  body{
+    background-color: #FCFCFC;
   }
   body:hover .menu-hamburger{
     display: block;
@@ -143,6 +149,9 @@
     <img class="unselectable icon" src="/img/photon-small.png"></img>    
     <a class="menu-toggle"> Close </a> 
     <a class="edit-grid"> Edit </a> 
+    <a class="save-grid"> Save </a> 
+    <a class="clear-grid"> Clear </a> 
+    <a class="drop-toggle"> Toggle DropArea </a> 
     <div class="background"></div>
 </nav>
 
@@ -153,7 +162,6 @@
     <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
       <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="javascript:void(0)">Edit</a></li>
       <li role="presentation"><a class="menu-toggle" role="menuitem" tabindex="-1" href="javascript:void(0)">Top Menu</a></li>
-
     </ul>
 </nav>      
 
@@ -163,16 +171,25 @@
     </ul>
 </div>
 
-<div style="bottom: 0; width:100%;
+<div id="drop-holder" class="" style="bottom: -280px; width:100%;
 position: fixed; z-index:999">
 
-<form 
+<!-- <form 
       style="padding-bottom:100px;"
       action="/{{album.id}}/upload"
+      id="media-drop"
       class="dropzone"
-      id="my-awesome-dropzone">
+      accept="accepted">
       <input type="hidden" name="_csrf" value="{{ csrf_token }}">
-</form>
+</form> -->
+
+<div style="padding-bottom:100px; height:280px" id="media-drop" class="dropzone-style">
+  
+  <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+
+
+</div>
+
 
 </div>
 
@@ -263,8 +280,8 @@ position: absolute;">
 <!-- Widget TMPL -->
 <script id="figureTmpl" type="text/template">
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <span href="<%= img_url %>" itemprop="contentUrl" data-size="600x600">
-                <img ondragstart="return false;" style="margin-top:-50px; margin-left:-20px" class="unselectable" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
+            <span href="//<%= media_url %>" itemprop="contentUrl" data-size="800x600">
+                <img onload="sizeInject(this)" ondragstart="return false;" class="unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
             </span>
             <figcaption itemprop="caption description">Image caption</figcaption>
         </figure>
@@ -311,6 +328,26 @@ $(".menu-toggle").click(function() {
     }
 });
 
+//Brut fore menu toggle
+$(".drop-toggle").click(function() {
+    var $menu = $("#drop-holder")
+    if ($menu.hasClass('open')){
+        $menu.animate({
+            bottom: "-280px",
+        }, 300, function(){
+            $menu.removeClass('open')
+        });
+        
+    } else {
+        $menu.animate({
+            bottom: "0px",
+        }, 300, function(){
+            
+        }); 
+        $menu.addClass('open') 
+    }
+});
+
 //These DOM Manipulation Functions can be abstracted and placed into a Seperate JS file.
 $(function(){
 
@@ -320,6 +357,21 @@ $(function(){
             editGrid(editing);
         });
         $(".edit-grid").data('editing',true);
+        $(".save-grid").click(function(){
+          save(url+"/widgets", _csrf);
+        });
+        $(".clear-grid").click(function(){
+          $.ajax({
+            url: url+"/widgets/all",
+            context: document.body,
+            dataType: "json",
+            type: "DELETE",
+            data: {_csrf:_csrf}
+          }).done(function(req) {
+            init();
+          });
+        });
+
 
         //This can be highly abstracted into the TMPL
         window.toggleEditing = function(el, setter){
@@ -349,18 +401,51 @@ $(function(){
             return editing;
         }
 
-        var init=function(widgets){
-            initPhotoSwipeFromDOM('.gallery');
-            initGrid(widgets)
-        };
-        $.ajax({
-          url: "/{{album.id}}/widgets",
-          context: document.body,
-          dataType: "json"
-        }).done(function(req) {
+        var url = "/{{album.id}}"
+        var _csrf = "{{csrf_token}}"
+        window.url=url;
+        window._csrf=_csrf
 
-          init(req);
+        window.init=function(){
+          $.ajax({
+            url: url+"/widgets",
+            context: document.body,
+            dataType: "json",
+            type: "GET"
+          }).done(function(req) {
+            initGrid(req)
+            initPhotoSwipeFromDOM('.gallery');
+          });
+        };
+
+        var myDropzone = new Dropzone("#media-drop", { 
+          url: "/{{album.id}}/upload",
+          sending: function(file, xhr, formData){
+                //formData._csrf=_csrf;
+                formData.append("_csrf",_csrf);
+          },
+          success:init
         });
+        init();
+
+        //inject the data size for PhotoSwipeFrom. Replaces the data-size="800x600" default
+        window.sizeInject=function(el){
+          var size=$(el).width()+'x'+$(el).height()
+          $(el).parent().attr('data-size',size);
+        }
+
+
+
+      // action="/{{album.id}}/upload"
+      // id="media-drop"
+      // accept="accepted">
+      // <input type="hidden" name="_csrf" value="{{ csrf_token }}"
+        // myDropzone.on("complete", function(file) {
+        //   myDropzone.removeFile(file);
+        // });
+        
+
+        //$('#media-drop').addClass('dropzone')
         
 
         // var initSwipe = function(gridster, serialization){

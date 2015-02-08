@@ -18,8 +18,9 @@
 	 * return undefined
 	 */
     var addAllWidget = function(gridster, serialization){
+        gridster.remove_all_widgets();
         $.each(serialization, function() {
-            gridster.add_widget('<li class="new">'+compiled({img_url:"http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png"})+'</li>', this.size_x, this.size_y, this.col, this.row);
+            gridster.add_widget('<li class="new">'+compiled({media_url:this.cdnUriProxy+'/org_'+this.fileName})+'</li>', this.size_x, this.size_y, this.col, this.row);
         });
     };
     /**
@@ -40,6 +41,7 @@
          var newbaseSize = calculateBaseWidth(".gridster",margins,rows)
          gridster = makeGridster(margins, newbaseSize);
     }, 500));
+
 
     var baseSize = calculateBaseWidth(".gridster", margins,rows)
     var makeGridster = function(margins, baseSize, edit){
@@ -68,8 +70,38 @@
         var newbaseSize = calculateBaseWidth(".gridster",margins, rows);
         gridster = makeGridster(margins, newbaseSize, editing);
     }
+
     window.editGrid=editGrid;
     window.initGrid = initGrid;
+
+    var save = function(url, _csrf){
+        var widgets=[];
+        gridster.$widgets.each(function(i,el){
+            var $el = $(el)
+            widgets.push({
+             col : $el.attr('data-col')
+            ,row : $el.attr('data-row')
+            ,size_x: $el.attr('data-sizex')
+            ,size_y: $el.attr('data-sizey')
+            // ,offset_x: $el.attr('data-offset_x')
+            // ,offset_y: $el.attr('data-offset_y')
+            // ,caption: $el.attr('data-caption')
+            // ,location: $el.attr('data-location')
+            });
+        });
+        var m = JSON.stringify( {_csrf:_csrf,widgets:widgets} ) 
+        $.ajax({
+          url: url,
+          type: "PUT",
+          context: document.body,
+          dataType: "json",
+          contentType: "application/json",
+          data: m
+        }).done(function(req) {
+          //init(req);
+        });
+    };
+    window.save = save;
 
 })(window, _, jQuery);
 
