@@ -313,29 +313,16 @@ $(".menu-toggle").click(function() {
 
 //These DOM Manipulation Functions can be abstracted and placed into a Seperate JS file.
 $(function(){
-        $(window).resize(_.debounce(function(){
-
-            toggleEditing(".edit-grid",false);
-            gridster.destroy();
-            // gridster.remove_all_widgets();
-             var newbaseSize = calculateWidth(".gridster",margins)
-             makeGridster(margins, newbaseSize)
-            // gridster.options.widget_base_dimensions=[newbaseSize,newbaseSize]
-            // addAllWidget(gridster ,serialization);
-            // gridster.$el.width( gridster.$wrapper.width()-20 );
-        }, 500));
 
         $(".edit-grid").click(function() {
 
             var editing = toggleEditing('.edit-grid');            
-            gridster.destroy();
-            var newbaseSize = calculateWidth(".gridster",margins)
-            gridster = makeGridster(margins, newbaseSize, editing);
+            editGrid(editing);
         });
         $(".edit-grid").data('editing',true);
 
         //This can be highly abstracted into the TMPL
-        var toggleEditing = function(el, setter){
+        window.toggleEditing = function(el, setter){
             if (setter!==undefined){
                 var editing = setter;
             }else{
