@@ -42,14 +42,14 @@ var AlbumSchema = new Schema({
     user: { type : Schema.ObjectId, ref : 'User' },
     createdAt: { type : Date, default : Date.now }
   }],
-  media: [{
-    cdnUri: String,
-    cdnUriProxy:String,
-    fileName: String,
-    user: {type : Schema.ObjectId, ref : 'User'},
-    deleted: {type : Date, default : null},
-    createdAt: { type : Date, default : Date.now }
-  }],
+  // media: [{
+  //   cdnUri: String,
+  //   cdnUriProxy:String,
+  //   fileName: String,
+  //   user: {type : Schema.ObjectId, ref : 'User'},
+  //   deleted: {type : Date, default : null},
+  //   createdAt: { type : Date, default : Date.now }
+  // }],
   widgets:[{
     col: { type : Number, default : null },
     row: { type : Number, default : null },
@@ -61,6 +61,12 @@ var AlbumSchema = new Schema({
     location: [{ type : Number, default : null }, { type : Number, default : null }],
     type: {type : String, default : '', trim : true},
     mediaIndex: { type : Number, default : null },
+    createdAt: { type : Date, default : Date.now },
+    cdnUri: String,
+    cdnUriProxy:String,
+    fileName: String,
+    user: {type : Schema.ObjectId, ref : 'User'},
+    deleted: {type : Date, default : null},
     createdAt: { type : Date, default : Date.now }
   }],
   createdAt  : {type : Date, default : Date.now}
@@ -115,6 +121,7 @@ AlbumSchema.methods = {
 
     var imager = new Imager(imagerConfig, 'S3');
     var self = this;
+    var type = "image"
 
     this.validate(function (err) {
       if (err) return cb(err);
@@ -124,16 +131,28 @@ AlbumSchema.methods = {
           files.forEach(function(val){
             console.log(cdnUri.replace(/^http:\/\/$/,''))
             cdnUri = cdnUri.replace(/\bhttp:\/\//gi,'')
-            self.media.push({ 
-                cdnUri : cdnUri
-              , cdnUriProxy : config.cdnProxy[cdnUri]
-              , file : val
-              , user:userId
-              , type:type
+            // var index = self.media.push({ 
+            //     cdnUri : cdnUri
+            //   , cdnUriProxy : config.cdnProxy[cdnUri]
+            //   , file : val
+            //   , user:userId
+            //   , type:type
+            // });
+            self.widgets.push({
+              col: 1,
+              row: 1,
+              size_x: 1,
+              size_y: 1,
+              cdnUri : cdnUri,
+              fileName : val,
+              user:userId,
+              type:type,
+              cdnUriProxy : config.cdnProxy[cdnUri],
             });
           });
-        }
-        self.save(cb);
+          self.save(cb);
+        }//end of if statmet
+        
       }, 'article');
     });
   },

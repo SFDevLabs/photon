@@ -107,6 +107,11 @@ module.exports = function (app, passport) {
 
   //API
   app.get('/:id/widgets', albums.widgets);
+  app.get('/:id/widgetsnew', albums.newWidget);
+  app.put('/:id/widgets', albums.updateWidget);
+  app.delete('/:id/widgets', albums.removeWidget);
+  app.delete('/:id/widgets/all', albums.removeAllWidget);
+
   
 
   // home route
