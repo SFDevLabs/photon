@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose')
   , async = require('async')
-  , Article = mongoose.model('Article')
+  , Article = mongoose.model('Album')
   , User = mongoose.model('User')
 
 /**
