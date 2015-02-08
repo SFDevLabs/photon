@@ -49,5 +49,8 @@ module.exports = {
     clientID: process.env.GOOGLE_CLIENTID,
     clientSecret: process.env.GOOGLE_SECRET,
     callbackURL: "http://localhost:3000/auth/google/callback"
+  },
+  cdnProxy:{
+    "s3.amazonaws.com/img.tryphoton.com":"img.tryphoton.com"
   }
 };

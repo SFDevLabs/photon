@@ -97,10 +97,6 @@ exports.uploadImage = function(req, res){
     return res.send(415,'Unsupported file type. Please Upload a "jpeg" or "jpg" image.')
   }
 
-  //return res.send('nada')
-
-
-  //return res.send(req.files.file)
   if (!files || files.length===0){ return res.send([])};
 
   album.uploadAndSave(files, req.user.id, function(err) {
@@ -157,7 +153,7 @@ exports.update = function (req, res){
 exports.show = function (req, res){
   res.render('albums/show', {
     title: req.album.title,
-    article: req.album
+    album: req.album
   });
 };
 

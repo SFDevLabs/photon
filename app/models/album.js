@@ -44,7 +44,9 @@ var AlbumSchema = new Schema({
   }],
   images: [{
     cdnUri: String,
-    fileName: String
+    cdnUriProxy:String,
+    fileName: String,
+    user: {type : Schema.ObjectId, ref : 'User'}
   }],
   createdAt  : {type : Date, default : Date.now},
 });
@@ -103,15 +105,15 @@ AlbumSchema.methods = {
       if (err) return cb(err);
       imager.upload(images, function (err, cdnUri, files) {
         if (err) return cb(err);
-        //console.log(err, cdnUri, files)
         if (files.length) {
-          // files.forEach(function(val){
-          //   self.images.push({ cdnUri : cdnUri, file : val, user:userId});
-          // });
+          files.forEach(function(val){
+            console.log(cdnUri.replace(/^http:\/\/$/,''))
+            cdnUri = cdnUri.replace(/\bhttp:\/\//gi,'')
+
+            self.images.push({ cdnUri : cdnUri, cdnUriProxy : config.cdnProxy[cdnUri], file : val, user:userId});
+          });
         }
-        //console.log(err, cdnUri, files)
-        cb(null,{})
-        //self.save(cb);
+        self.save(cb);
       }, 'article');
     });
   },
