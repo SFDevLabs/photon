@@ -42,13 +42,28 @@ var AlbumSchema = new Schema({
     user: { type : Schema.ObjectId, ref : 'User' },
     createdAt: { type : Date, default : Date.now }
   }],
-  images: [{
+  media: [{
     cdnUri: String,
     cdnUriProxy:String,
     fileName: String,
-    user: {type : Schema.ObjectId, ref : 'User'}
+    user: {type : Schema.ObjectId, ref : 'User'},
+    deleted: {type : Date, default : null},
+    createdAt: { type : Date, default : Date.now }
   }],
-  createdAt  : {type : Date, default : Date.now},
+  widgets:[{
+            col: { type : Number, default : null },
+            row: { type : Number, default : null },
+            size_x: { type : Number, default : null },
+            size_y: { type : Number, default : null },
+            offset_x: { type : Number, default : null },
+            offset_y: { type : Number, default : null },
+            caption: { type : Date, default : null },
+            location: [{ type : Number, default : null }, { type : Number, default : null }],
+            type: {type : String, default : '', trim : true},
+            mediaIndex: { type : Number, default : null },
+            createdAt: { type : Date, default : Date.now }
+  }],
+  createdAt  : {type : Date, default : Date.now}
 });
 
 /**
@@ -109,8 +124,13 @@ AlbumSchema.methods = {
           files.forEach(function(val){
             console.log(cdnUri.replace(/^http:\/\/$/,''))
             cdnUri = cdnUri.replace(/\bhttp:\/\//gi,'')
-
-            self.images.push({ cdnUri : cdnUri, cdnUriProxy : config.cdnProxy[cdnUri], file : val, user:userId});
+            self.media.push({ 
+                cdnUri : cdnUri
+              , cdnUriProxy : config.cdnProxy[cdnUri]
+              , file : val
+              , user:userId
+              , type:type
+            });
           });
         }
         self.save(cb);
