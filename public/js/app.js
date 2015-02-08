@@ -31,20 +31,13 @@
     var calculateBaseWidth = function(el, margins, rows){
         var width = $(el).width();
         var base = (width-((rows*2)*margins[0]))/rows;
-        //base-=1;//removing padding
-        return base
-    };
-
-    var calculateWidth = function(el, margins){
-        var width = $(el).width();
-        var base = (width-(12*margins[0]))/6;
         return base
     };
 
     $(window).resize(_.debounce(function(){
         window.toggleEditing(".edit-grid",false);
         gridster.destroy();
-         var newbaseSize = calculateWidth(".gridster",margins)
+         var newbaseSize = calculateBaseWidth(".gridster",margins,rows)
          gridster = makeGridster(margins, newbaseSize);
     }, 500));
 
@@ -72,16 +65,11 @@
     }
     var editGrid = function(editing){
 		gridster.destroy();
-        var newbaseSize = calculateWidth(".gridster",margins);
+        var newbaseSize = calculateBaseWidth(".gridster",margins, rows);
         gridster = makeGridster(margins, newbaseSize, editing);
     }
     window.editGrid=editGrid;
     window.initGrid = initGrid;
-
-    
-
-    
-
 
 })(window, _, jQuery);
 
