@@ -35,7 +35,7 @@ var setTags = function (tags) {
 var AlbumSchema = new Schema({
   title: {type : String, default : '', trim : true},
   body: {type : String, default : '', trim : true},
-  url  : {type : Date, default : Date.now},
+  url  : {type : String, default : '', trim : true},
   user: {type : Schema.ObjectId, ref : 'User'},
   comments: [{
     body: { type : String, default : '' },
@@ -70,6 +70,16 @@ AlbumSchema.pre('remove', function (next) {
 
   next();
 });
+
+/**
+ * Pre-save hook
+ */
+
+// AlbumSchema.pre('save', function (next) {
+//   This is where me make a custom url from the title!
+//   this.url=this.title;
+//   next();
+// });
 
 /**
  * Methods

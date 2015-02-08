@@ -78,7 +78,6 @@ exports.create = function (req, res) {
       req.flash('success', 'Successfully created article!');
       return res.redirect('/'+article._id);
     }
-    console.log(err);
     res.render('albums/new', {
       title: 'New Article',
       article: article,
@@ -170,6 +169,6 @@ exports.destroy = function (req, res){
   var article = req.article;
   article.remove(function (err){
     req.flash('info', 'Deleted successfully');
-    res.redirect('/articles');
+    res.redirect('/');
   });
 };
