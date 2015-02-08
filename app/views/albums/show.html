@@ -139,12 +139,12 @@
   </style>
 
 
-  <nav class="menu" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
+<nav class="menu open" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
     <img class="unselectable icon" src="/img/photon-small.png"></img>    
-    <a id="button"> Close </a> 
+    <a class="menu-toggle"> Close </a> 
     <a class="edit-grid"> Edit </a> 
     <div class="background"></div>
-  </nav>
+</nav>
 
 <nav class="menu-hamburger" role="navigation" class="" > 
     <a id="drop2" href="javascript:void(0)" class="dropdown-toggle right" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
@@ -152,6 +152,7 @@
     </a>
     <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
       <li role="presentation"><a class="edit-grid" role="menuitem" tabindex="-1" href="javascript:void(0)">Edit</a></li>
+      <li role="presentation"><a class="menu-toggle" role="menuitem" tabindex="-1" href="javascript:void(0)">Top Menu</a></li>
 
     </ul>
 </nav>      
@@ -258,169 +259,63 @@ position: absolute;">
     </div>
 
 </div>
-  
-{% endblock %}
 
-{% block subfoot %}
-
-<!-- Core JS file -->
-<script src="/js/vendor/photoswipe.min.js"></script> 
-<script src="/js/vendor/dropzone.js"></script>
-
-<!-- UI JS file -->
-<script src="/js/vendor/photoswipe-ui-default.min.js"></script>
-<script src='/js/vendor/jquery.grister.js'></script>
-<script src='/js/vendor/underscore.js'></script>
-
+<!-- Widget TMPL -->
 <script id="figureTmpl" type="text/template">
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <span href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="contentUrl" data-size="600x600">
+            <span href="<%= img_url %>" itemprop="contentUrl" data-size="600x600">
                 <img ondragstart="return false;" style="margin-top:-50px; margin-left:-20px" class="unselectable" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Small_rhombicosidodecahedron.png/600px-Small_rhombicosidodecahedron.png" itemprop="thumbnail" alt="Image description" />
             </span>
             <figcaption itemprop="caption description">Image caption</figcaption>
         </figure>
 </script>
+{% endblock %}
+{% block subfoot %}
+
+<!-- Core JS file -->
+<script src="/js/vendor/photoswipe.min.js"></script> 
+<script src="/js/vendor/dropzone.js"></script>
+<script src='/js/vendor/underscore.js'></script>
+
+<!-- UI JS file -->
+<script src="/js/vendor/photoswipe-ui-default.min.js"></script>
+<script src='/js/vendor/jquery.grister.js'></script>
+
+<!-- APP JS file -->
+<script src="/js/app.js"></script>
+
 
 <script type="text/javascript">
 
 
-// $('#fileuploadimage').fileupload({
-//         url: '/{{article.id}}/upload'
-//         ,dataType: 'json'
-//         ,autoUpload: true
-//         ,dropZone: $('#dropzoneimage')
-//         ,formData: [
-//          { name: '_csrf', value: "{{ csrf_token }}" }
-//         ]
-//       //  acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-//         ,maxFileSize: 20000000 // 5 MB
-//         // Enable image resizing, except for Android and Opera,
-//         // which actually support image resizing, but fail to
-//         // send Blob objects via XHR requests:
-//         ,disableImageResize: /Android(?!.*Chrome)|Opera/
-//             .test(window.navigator.userAgent)
-//         ,previewMaxWidth: 100
-//         ,previewMaxHeight: 100
-//         ,previewCrop: true
-//     }).on('fileuploaddone', function (e, data) {
-
-//     });
 
 
-
-$("#button").click(function() {
-    $(".menu").css("z-index","-1")
-    $(".gridster").animate({
-        top: "0px",
-    }, 300);
+//Brut fore menu toggle
+$(".menu-toggle").click(function() {
+    var $menu = $(".menu")
+    if ($menu.hasClass('open')){
+        $menu.css("z-index","-1")
+        $(".gridster").animate({
+            top: "0px",
+        }, 300, function(){
+            $menu.removeClass('open')
+        });
+        
+    } else {
+        $(".gridster").animate({
+            top: "50px",
+        }, 300, function(){
+            $menu.css("z-index","")
+        }); 
+        $menu.addClass('open') 
+    }
 });
 
-
-var makeUnselectable = function( $target ) {
-    $target
-        .addClass( 'unselectable' ) // All these attributes are inheritable
-        .attr( 'unselectable', 'on' ) // For IE9 - This property is not inherited, needs to be placed onto everything
-        .attr( 'draggable', 'false' ) // For moz and webkit, although Firefox 16 ignores this when -moz-user-select: none; is set, it's like these properties are mutually exclusive, seems to be a bug.
-        .on( 'dragstart', function() { return false; } );  // Needed since Firefox 16 seems to ingore the 'draggable' attribute we just applied above when '-moz-user-select: none' is applied to the CSS 
-
-    $target // Apply non-inheritable properties to the child elements
-        .find( '*' )
-        .attr( 'draggable', 'false' )
-        .attr( 'unselectable', 'on' ); 
-};
-makeUnselectable($('.gallery img'))
-
-
-
-    $(function(){
-      var gridster;
-
-      // same object than generated with gridster.serialize() method
-      var serialization = [
-        {
-            col: 1,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 2,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 3,
-            row: 1,
-            size_x: 2,
-            size_y: 1,
-
-        },
-        {
-            col: 5,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 6,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 3,
-            row: 3,
-            size_x: 1,
-            size_y: 1
-        }
-        
-        
-      ];
-
-
-      // sort serialization
-
-
-        var tmpl=$("#figureTmpl").text();
-        var addAllWidget = function(gridster, serialization){
-            $.each(serialization, function() {
-                gridster.add_widget('<li class="new">'+tmpl+'</li>', this.size_x, this.size_y, this.col, this.row);
-            });
-        };
-        var calculateWidth = function(el, margins){
-            var width = $(el).width();
-            var base = (width-(12*margins[0]))/6;
-            //base-=1;//removing padding
-            return base
-        };
-        var makeGridster = function(margins, baseSize, edit){
-             
-            var grid = $(".gridster ul").gridster({
-              widget_base_dimensions: [baseSize, baseSize],
-              widget_margins: margins,
-              resize:{
-                enabled:edit?true:false
-              }
-            }).data('gridster')
-
-            if (!edit){grid.disable(),$('.gs-resize-handle').remove();}
-            return grid
-        };
-        var serialization = Gridster.sort_by_row_and_col_asc(serialization);
-        var margins = [1,1]
-        var baseSize = calculateWidth(".gridster", margins)
-        var gridster = makeGridster(margins, baseSize);
-
-
-        window.gridster=gridster;
+//These DOM Manipulation Functions can be abstracted and placed into a Seperate JS file.
+$(function(){
         $(window).resize(_.debounce(function(){
 
-            toggleEdit(".edit-grid",false);
+            toggleEditing(".edit-grid",false);
             gridster.destroy();
             // gridster.remove_all_widgets();
              var newbaseSize = calculateWidth(".gridster",margins)
@@ -429,35 +324,34 @@ makeUnselectable($('.gallery img'))
             // addAllWidget(gridster ,serialization);
             // gridster.$el.width( gridster.$wrapper.width()-20 );
         }, 500));
+
         $(".edit-grid").click(function() {
 
-            var editing = toggleEdit('.edit-grid');            
+            var editing = toggleEditing('.edit-grid');            
             gridster.destroy();
             var newbaseSize = calculateWidth(".gridster",margins)
             gridster = makeGridster(margins, newbaseSize, editing);
         });
         $(".edit-grid").data('editing',true);
 
-        var toggleEdit = function(el, setter){
+        //This can be highly abstracted into the TMPL
+        var toggleEditing = function(el, setter){
             if (setter!==undefined){
                 var editing = setter;
             }else{
                 var editing = $(el).data('editing');
                 $(el).data('editing', !editing);
             }
-            
             var html = editing?'Stop Editing':'Edit'
             $('.gridster li').addClass('shaddow-transition')
             if (editing){
                 $('.gridster li').addClass('shaddow').addClass('hand');
                 $('.gridster li').prepend('<a href="javascript:void(0)" class="close-item"><i class="fa fa-times"></i></a>')
                 $('.gridster li').prepend('<a class="position" href="javascript:void(0)"><i class="fa fa-arrows "></i></a>')
-
             }else{
                 $('.gridster li').removeClass('shaddow').removeClass('hand'); 
                 $('.gridster li .close-item').remove();
                 $('.gridster li .position').remove();
-
 
             }
             setTimeout(function() {
@@ -468,231 +362,33 @@ makeUnselectable($('.gallery img'))
             return editing;
         }
 
-        var initSwipe = function(gridster, serialization){
+        var init=function(widgets){
+            initPhotoSwipeFromDOM('.gallery');
+            initGrid(widgets)
+        };
+        $.ajax({
+          url: "/{{album.id}}/widgets",
+          context: document.body,
+          dataType: "json"
+        }).done(function(req) {
 
-            if (gridster.$widgets.length===serialization.length){
-                initPhotoSwipeFromDOM('.gallery');
-            } else{
-                setTimeout(function(){
-                    initSwipe(gridster, serialization);
-                },500)
-            }
-        }
-
-        addAllWidget(gridster ,serialization);
-
-        initPhotoSwipeFromDOM('.gallery');
-        // $(".gridster img").on('drag',function(event){
-        //     event.preventDefault()
-        //     return false;
-        // })
-        //  $(".gallery figure span").click(function(event){
-        //     event.preventDefault()
-        //     return
-        // });
-
-        //$('.js-seralize').on('click', function() {
-        //});
-
-      });
-
-var initPhotoSwipeFromDOM = function(gallerySelector) {
-
-    // parse slide data (url, title, size ...) from DOM elements 
-    // (children of gallerySelector)
-    var parseThumbnailElements = function(el) {
-        var thumbElements = $(el).find('figure'),//I know I'm adding jqeary
-            numNodes = thumbElements.length,
-            items = [],
-            figureEl,
-            linkEl,
-            size,
-            item;
-
-        for(var i = 0; i < numNodes; i++) {
-
-            figureEl = thumbElements[i]; // <figure> element
-
-            // include only element nodes 
-            if(figureEl.nodeType !== 1) {
-                continue;
-            }
-
-            linkEl = figureEl.children[0]; // <a> element
-
-            size = linkEl.getAttribute('data-size').split('x');
-
-            // create slide object
-            item = {
-                src: linkEl.getAttribute('href'),
-                w: parseInt(size[0], 10),
-                h: parseInt(size[1], 10)
-            };
-
-
-
-            if(figureEl.children.length > 1) {
-                // <figcaption> content
-                item.title = figureEl.children[1].innerHTML; 
-            }
-
-            if(linkEl.children.length > 0) {
-                // <img> thumbnail element, retrieving thumbnail url
-                item.msrc = linkEl.children[0].getAttribute('src');
-            } 
-
-            item.el = figureEl; // save link to element for getThumbBoundsFn
-            items.push(item);
-        }
-
-        return items;
-    };
-
-    // find nearest parent element
-    var closest = function closest(el, fn) {
-        return el && ( fn(el) ? el : closest(el.parentNode, fn) );
-    };
-
-    // triggers when user clicks on thumbnail
-    var onThumbnailsClick = function(e) {
-        e = e || window.event;
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
-
-        if (!$(".edit-grid").data('editing')){
-            return false;
-        }
+          init(req);
+        });
         
 
-        var eTarget = e.target || e.srcElement;
-
-        // find root element of slide
-        var clickedGallery = $(eTarget).closest('ul')
-        var clickedListItems = $(eTarget).closest('ul').find('figure')
-        var clickedItem = $(eTarget).closest('figure')[0]
-        // var clickedListItem = closest(eTarget, function(el) {
-        //     return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
-        // });
-
-        if(!clickedListItems) {
-            return;
-        }
-
-        // find index of clicked item by looping through all child nodes
-        // alternatively, you may define index via data- attribute
-         
-        // var childNodes = clickedListItem.parentNode.childNodes,
-        //     numChildNodes = childNodes.length,
-        var nodeIndex = 0;
-        //     index;
-
-        for (var i = 0; i < clickedListItems.length; i++) {
-            if(clickedListItems[i].nodeType !== 1) { 
-                continue; 
-            }
-
-            if(clickedListItems[i] === clickedItem) {
-                index = nodeIndex;
-                break;
-            }
-            nodeIndex++;
-        }
+        // var initSwipe = function(gridster, serialization){
+        //     if (gridster.$widgets.length===serialization.length){
+        //         initPhotoSwipeFromDOM('.gallery');
+        //     } else{
+        //         setTimeout(function(){
+        //             initSwipe(gridster, serialization);
+        //         },500)
+        //     }
+        // }
 
 
 
-        if(index >= 0) {
-            // open PhotoSwipe if valid index found
-            openPhotoSwipe( index, clickedGallery[0] );
-        }
-        return false;
-    };
-
-    // parse picture index and gallery index from URL (#&pid=1&gid=2)
-    var photoswipeParseHash = function() {
-        var hash = window.location.hash.substring(1),
-        params = {};
-
-        if(hash.length < 5) {
-            return params;
-        }
-
-        var vars = hash.split('&');
-        for (var i = 0; i < vars.length; i++) {
-            if(!vars[i]) {
-                continue;
-            }
-            var pair = vars[i].split('=');  
-            if(pair.length < 2) {
-                continue;
-            }           
-            params[pair[0]] = pair[1];
-        }
-
-        if(params.gid) {
-            params.gid = parseInt(params.gid, 10);
-        }
-
-        if(!params.hasOwnProperty('pid')) {
-            return params;
-        }
-        params.pid = parseInt(params.pid, 10);
-        return params;
-    };
-
-    var openPhotoSwipe = function(index, galleryElement, disableAnimation) {
-        var pswpElement = document.querySelectorAll('.pswp')[0],
-            gallery,
-            options,
-            items;
-
-        items = parseThumbnailElements(galleryElement);
-
-        // define options (if needed)
-        options = {
-            index: index,
-
-            // define gallery index (for URL)
-            galleryUID: galleryElement.getAttribute('data-pswp-uid'),
-
-            getThumbBoundsFn: function(index) {
-                // See Options -> getThumbBoundsFn section of documentation for more info
-                var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
-                    pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
-                    rect = thumbnail.getBoundingClientRect(); 
-
-                return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
-            }
-
-        };
-
-        if(disableAnimation) {
-            options.showAnimationDuration = 0;
-        }
-
-        // Pass data to PhotoSwipe and initialize it
-        gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-        gallery.init();
-    };
-
-    // loop through all gallery elements and bind events
-    var galleryElements = document.querySelectorAll( gallerySelector );
-
-    for(var i = 0, l = galleryElements.length; i < l; i++) {
-        galleryElements[i].setAttribute('data-pswp-uid', i+1);
-        galleryElements[i].onclick = onThumbnailsClick
-    }
-
-
-    // Parse URL and open gallery if it contains #&pid=3&gid=1
-    var hashData = photoswipeParseHash();
-    if(hashData.pid > 0 && hashData.gid > 0) {
-        openPhotoSwipe( hashData.pid - 1 ,  galleryElements[ hashData.gid - 1 ], true );
-    }
-};
-
-// execute above function
- //initPhotoSwipeFromDOM('.gallery');
-
-// initPhotoSwipeFromDOM('.my-gallery');
+});
 
 </script>
 {% endblock %}
