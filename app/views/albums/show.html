@@ -1,4 +1,4 @@
-{% extends '../layouts/album.html' %}
+\{% extends '../layouts/album.html' %}
 
 
 {% block subhead %}
@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="/js/vendor/photoswipe.css"> 
 <link rel="stylesheet" href="/css/vendor/jquery.gridster.css"> 
 <link rel="stylesheet" href="/css/grid-edit.css"> 
+<link rel="stylesheet" href="/css/app.css"> 
+
 
 <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
      In the folder of skin CSS file there are also:
@@ -21,128 +23,6 @@
 {% endblock %}
 
 {% block content %}
-  <style>
-  .grid{
-    height:calc(100% + 58px );
-    max-height: 1200px;
-    max-width: 1600px;
-
-    position: relative;
-    top:58px;
-  }
-/*  .gridholder{
-    height:calc(100% + 58px);
-  }*/
-  .grid{
-      background-color: #EAEAEA;
-  }
-  .grid [class*="col-"] {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    background-color: #eee;
-    background-color: rgba(86,61,124,.15);
-    border: 1px solid #ddd;
-    border: 1px solid rgba(86,61,124,.2);
-  }
-  .one{
-    width: calc(100% / 3 );
-    height: calc(100% / 3 * 2);
-    top: 0;
-    left:0;
-  }
-  .two{
-    width: calc(100% / 3*2);
-    height: calc(100% / 3 * 1);
-    left: calc(100% / 3 );
-    top:0px;
-  }
-  .three{
-    width: calc(100% / 3*1);
-    height: calc(100% / 3 * 1);
-    left: calc(100% / 3 );
-    top: calc(100% / 3 );
-
-  }
-  .four{
-    width: calc(100% / 3);
-    height: calc(100% / 3 * 1);
-    left: calc(100% / 3*2 );
-    top: calc(100% / 3*1 );
-    background-color: green;
-  }
-  .five{
-    width: calc(100%);
-    height: calc(100% / 3 * 1);
-    background-color: green;
-    left: 0px;
-    top:calc(100% / 3 *2);
-  }
-  .six{
-    width: calc(100%);
-    height: calc(100% / 3 * 1);
-    background-color: green;
-    left: 0px;
-    top:calc(100% / 3 *3);
-  }
-  .photo{
-    position: absolute;
-    border:1px solid;
-    overflow: hidden;
-   
-  }
-  .photo a img{
-    width: 100%;
-  }
-  .buttom{
-    height:1px;
-  }
-  .menu{
-    position: absolute;
-    height:50px;
-    width: 100%;
-    box-shadow: 0px .1px .2px 0 rgba(0, 0, 0, 0.1);
-    z-index: 999;
-  }
-  .menu .background{
-    background-image:url('/img/matte.png');
-    opacity: .20;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    z-index: -1;
-
-  }
-  .menu .icon{
-    margin:7px;
-    height: 40px;
-  }
-  .menu a{
-    padding: 0px 15px;
-  }
-  .menu-hamburger{
-    position: absolute;
-    right:25px;
-    top:10px;
-    z-index: 999;
-    width: 150px;
-    text-align: right;
-    font-size: 1.6em;
-    font-weight: bolder;
-    display: none;
-  }
-  body{
-    background-color: #FCFCFC;
-  }
-  body:hover .menu-hamburger{
-    display: block;
-  }
-  .gridster figcaption {
-    display: none;
-  }
-  
-
-  </style>
 
 
 <nav class="menu open" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
@@ -152,6 +32,10 @@
     <a class="save-grid"> Save </a> 
     <a class="clear-grid"> Clear </a> 
     <a class="drop-toggle"> Toggle DropArea </a> 
+    <a data-reposition="true" class="resize-grid"> Resize DropArea </a> 
+
+
+
     <div class="background"></div>
 </nav>
 
@@ -171,26 +55,10 @@
     </ul>
 </div>
 
-<div id="drop-holder" class="" style="bottom: -280px; width:100%;
-position: fixed; z-index:999">
-
-<!-- <form 
-      style="padding-bottom:100px;"
-      action="/{{album.id}}/upload"
-      id="media-drop"
-      class="dropzone"
-      accept="accepted">
-      <input type="hidden" name="_csrf" value="{{ csrf_token }}">
-</form> -->
-
-<div style="padding-bottom:100px; height:280px" id="media-drop" class="dropzone-style">
-  
-  <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
-
-
-</div>
-
-
+<div id="drop-holder">
+  <div style="padding-bottom:100px; height:280px" id="media-drop" class="dropzone-style">
+    <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+  </div>
 </div>
 
 
@@ -279,9 +147,9 @@ position: absolute;">
 
 <!-- Widget TMPL -->
 <script id="figureTmpl" type="text/template">
-    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <figure class="dragger" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
             <span href="//<%= media_url %>" itemprop="contentUrl" data-size="800x600">
-                <img onload="sizeInject(this)" ondragstart="return false;" class="unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
+                <img onload="sizeInject(this)" ondragstart="return false;" class="grid-img unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
             </span>
             <figcaption itemprop="caption description">Image caption</figcaption>
         </figure>
@@ -360,6 +228,11 @@ $(function(){
             var editing = toggleEditing('.edit-grid');            
             editGrid(editing);
         });
+
+
+
+        
+
         $(".edit-grid").data('editing',true);
         $(".save-grid").click(function(){
           save(url+"/widgets", _csrf);
@@ -383,8 +256,8 @@ $(function(){
                 var editing = setter;
             }else{
                 var editing = $(el).data('editing');
-                $(el).data('editing', !editing);
             }
+            $(el).data('editing', !editing);
             var html = editing?'Stop Editing':'Edit'
             $('.gridster li').addClass('shaddow-transition')
             if (editing){
@@ -420,9 +293,51 @@ $(function(){
             initGrid(req)
             setTimeout(function(){
               initPhotoSwipeFromDOM('.gallery');
+
+
+              $(".resize-grid").click(function() {
+                  //$(".grid-img").removeClass("unselectable");
+                  var editing = toggleEditing('.edit-grid', true);   
+                  editGrid(false);
+
+                  var reposition = $(this).data('reposition');
+                  $(this).data('reposition', !reposition);
+                  debugger
+                  if (reposition)
+                    $('.gridster li').on('mousedown', mouseDownDrag);
+                  else
+                    $('.gridster li').off('mousedown', mouseDownDrag);
+
+              });
+              //$(".gridster li").data('reposition', false);
+              
+
+              var mouseDownDrag = function(event){
+                //console.log(event,1)
+                $(window).on('mousemove',$.proxy( drag, this ));
+              }
+              $(window).on('mouseup', function(event){
+                //console.log(event,2)
+                $(window).off('mousemove',drag);
+              });
+              var drag = function(){
+                var $img = $("img", this);
+
+                console.log(1)
+                var newX = $img.position().left+ event.movementX;
+                var newY = $img.position().top+ event.movementY;
+                
+
+                $img.css({
+                  "left":newX,
+                  "top":newY
+                })
+              };
+
             },500);//I know bad jst will testing is over.
             
           });
+          
         };
 
         var myDropzone = new Dropzone("#media-drop", { 

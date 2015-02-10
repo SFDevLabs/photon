@@ -43,52 +43,17 @@
     display: block;
 }
 
-/*.gridster .gs-w {
-    background: #FFF;
-    cursor: pointer;
-    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
-}*/
-
 .gridster .gs-w {
     background: #FFF;
     overflow: hidden;
     cursor: pointer;
 }
-.shaddow-transition{
-    transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1)!important;
-}
-.shaddow{
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
 
-}
-
-.hand{
-    cursor: grab!important;
-    cursor: -webkit-grab!important;
-}
-.unselectable {
-    /* For Opera and <= IE9, we need to add unselectable="on" attribute onto each element */
-    /* Check this site for more details: http://help.dottoro.com/lhwdpnva.php */
-    -moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
-    -webkit-user-select: none;
-    -ms-user-select: none; /* From IE10 only */
-    user-select: none; /* Not valid CSS yet, as of July 2012 */
-
-    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
-    user-drag: none;
-}
 .gs-resize-handle-both{
     width: 25px;
     height: 25px;
     background-size: .8em;
 }
-
-/*.gridster .player {
-    -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
-    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
-}*/
-
 
 .gridster .gs-w.try {
     background-image: url(../img/sprite.png);
@@ -103,11 +68,6 @@
     background: rgba(255,255,255,.2)!important;
 }
 
-
-
-
-
-
-
-
-
+.gridster .grid-img{
+    position: absolute;
+}
