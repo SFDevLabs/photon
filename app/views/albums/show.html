@@ -26,13 +26,16 @@
 
 
 <nav class="menu open" role="navigation" class="navbar navbar-default navbar-fixed-top" > 
-    <img class="unselectable icon" src="/img/photon-small.png"></img>    
-    <a class="menu-toggle"> Close </a> 
-    <a class="edit-grid"> Edit </a> 
-    <a class="save-grid"> Save </a> 
-    <a class="clear-grid"> Clear </a> 
-    <a class="drop-toggle"> Toggle DropArea </a> 
-    <a data-reposition="true" class="resize-grid"> Resize DropArea </a> 
+    <div class="menu-holder">
+      <img class="unselectable icon" src="/img/photon-small.png"></img>    
+      <a class="menu-toggle"> Close </a> 
+      <a class="edit-grid"> Edit </a> 
+      <a class="save-grid"> Save </a> 
+      <a class="clear-grid"> Clear </a> 
+      <a class="drop-toggle"> Toggle DropArea </a> 
+      <a data-reposition="true" class="resize-grid"> Resize DropArea </a>       
+    </div>
+
 
 
 
@@ -147,12 +150,17 @@ position: absolute;">
 
 <!-- Widget TMPL -->
 <script id="figureTmpl" type="text/template">
+
     <figure class="dragger" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-            <span href="//<%= media_url %>" itemprop="contentUrl" data-size="800x600">
-                <img onload="sizeInject(this)" ondragstart="return false;" class="grid-img unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
+            <span href="//<%= media_url %>" itemprop="contentUrl">
+                <img onload="sizeInject(this)" data-scale="<%= scale %>" data-offset-x="<%= offset_x %>" data-offset-y="<%= offset_y %>" ondragstart="return false;" class="grid-img unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
             </span>
-            <figcaption itemprop="caption description">Image caption</figcaption>
+            <figcaption itemprop="caption description"><%= caption %></figcaption>
         </figure>
+      <a class="close-item circle glass" href="javascript:void(0)" ><i class="fa fa-times"></i></a>
+      <a class="scale-grid circle glass" href="javascript:void(0)"><i class="fa fa-arrows "></i></a>
+      <a class="position circle glass" href="javascript:void(0)"><i class="fa fa-arrows "></i></a>
+
 </script>
 {% endblock %}
 {% block subfoot %}
@@ -262,12 +270,12 @@ $(function(){
             $('.gridster li').addClass('shaddow-transition')
             if (editing){
                 $('.gridster li').addClass('shaddow').addClass('hand');
-                $('.gridster li').prepend('<a href="javascript:void(0)" class="close-item"><i class="fa fa-times"></i></a>')
-                $('.gridster li').prepend('<a class="position" href="javascript:void(0)"><i class="fa fa-arrows "></i></a>')
+                // $('.gridster li').prepend('<a href="javascript:void(0)" class="close-item"><i class="fa fa-times"></i></a>')
+                // $('.gridster li').prepend('<a class="position" href="javascript:void(0)"><i class="fa fa-arrows "></i></a>')
             }else{
                 $('.gridster li').removeClass('shaddow').removeClass('hand'); 
-                $('.gridster li .close-item').remove();
-                $('.gridster li .position').remove();
+                // $('.gridster li .close-item').remove();
+                // $('.gridster li .position').remove();
 
             }
             setTimeout(function() {
@@ -302,13 +310,24 @@ $(function(){
 
                   var reposition = $(this).data('reposition');
                   $(this).data('reposition', !reposition);
-                  debugger
+                  
                   if (reposition)
                     $('.gridster li').on('mousedown', mouseDownDrag);
                   else
                     $('.gridster li').off('mousedown', mouseDownDrag);
 
               });
+              $(".scale-grid").click(function() {
+                  var result = prompt("Enter a scale percent");
+                  $(this).parent().attr('data-scale',result);
+
+                  $(this).parent().find('img').width('')
+
+                  $(this).parent().find('img').css({//duplicated I know
+                     width:(result/100)*$(this).parent().find('img').width()
+                  });
+              });
+              
               //$(".gridster li").data('reposition', false);
               
 
@@ -323,11 +342,20 @@ $(function(){
               var drag = function(){
                 var $img = $("img", this);
 
-                console.log(1)
+                var size = $('span',this).attr('data-size').split('x');
+
+
+                //console.log(newX/size[0])
+                
                 var newX = $img.position().left+ event.movementX;
                 var newY = $img.position().top+ event.movementY;
                 
 
+                $(this).attr('data-offset-y',newY)
+                $(this).attr('data-offset-x',newX)
+
+                
+                console.log(newY, size, ((newX/size[0])*100)+"%")
                 $img.css({
                   "left":newX,
                   "top":newY
@@ -352,8 +380,22 @@ $(function(){
 
         //inject the data size for PhotoSwipeFrom. Replaces the data-size="800x600" default
         window.sizeInject=function(el){
-          var size=$(el).width()+'x'+$(el).height()
+          var width = $(el).width();
+          var height = $(el).height();
+          var size=width+'x'+height;
           $(el).parent().attr('data-size',size);
+          $li = $(el).closest('li');
+          var newY = Number($(el).attr('data-offset-y'));
+          var newX = Number($(el).attr('data-offset-x'));
+          var scale = Number($(el).attr('data-scale'));
+          
+          var newWidth = scale?(scale/100)*width:width;
+          $(el).css({
+                  "left":newX,
+                  "top":newY,
+                  "width":newWidth
+                });
+
         }
 
 

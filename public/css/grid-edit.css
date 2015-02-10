@@ -18,30 +18,70 @@
     margin:0px;
 
 }
-.gridster .gs-w .close-item{
+.gridster .gs-w a{
     margin:5px;
+    display: none;
+}
+
+/*
+Icons for Grid items
+ */
+.gridster .gs-w .close-item{
+    
     font-size: 1.3em;
     right:0px;
     position: absolute;
     color:#999;
     text-decoration: none;
-    display: none;
-}
-.gridster .gs-w:hover .close-item{
-    display: block;
+    
 }
 
 .gridster .gs-w .position{
-    margin:5px;
     font-size: 1.1em;
     color:#999;
     text-decoration: none;
     position: absolute;
-    display: none;
+}
+
+.gridster .gs-w .scale-grid{
+    font-size: 1.1em;
+    color:#999;
+    text-decoration: none;
+    position: absolute;
+    bottom:5px;
+}
+
+
+.close-item i{
+    margin:4px 6px;
+}
+
+.position i{
+    margin: 5px;
+}
+
+.gridster .gs-w:hover .close-item{
+    display: block;
 }
 .gridster .gs-w:hover .position{
     display: block;
 }
+.gridster .gs-w:hover .scale-grid{
+    display: block;
+}
+.circle{
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+
+}
+.glass{
+    opacity: .6;
+    background-color: #eee;
+}
+
+
+
 
 .gridster .gs-w {
     background: #FFF;
@@ -70,4 +110,5 @@
 
 .gridster .grid-img{
     position: absolute;
+
 }
