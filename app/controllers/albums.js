@@ -280,3 +280,24 @@ exports.destroy = function (req, res){
     res.redirect('/');
   });
 };
+
+/**
+ * Load
+ */
+
+exports.email = function (req, res){
+
+  console.log(req.body);
+  console.log(req.files);
+  console.log(Object.keys(req.files));
+
+  return res.status(200).send("success");
+  // var User = mongoose.model('User');
+
+  // Album.load(id, function (err, album) {
+  //   if (err) return next(err);
+  //   if (!album) return next(new Error('not found'));
+  //   req.album = album;
+  //   next();
+  // });
+};

@@ -113,12 +113,23 @@ module.exports = function (app, passport) {
   app.use(helpers(pkg.name));
 
   // adds CSRF support
+  var csrfObj = csrf();
+  var conditionalCSRF = function (req, res, next) {
+    console.log(req.url,',CSRF')
+    if (req.url==='/email') { //skipping for CSRF token.  It's a sendgrid endpoint.
+      next();
+    } else { //dop the normal thing and make csrf required for the request.
+      csrfObj(req, res, next);
+    }
+  }
   if (process.env.NODE_ENV !== 'test') {
-    app.use(csrf());
-
+    app.use(conditionalCSRF);
+    
     // This could be moved to view-helpers :-)
     app.use(function (req, res, next) {
-      res.locals.csrf_token = req.csrfToken();
+      if (req.csrfToken){ ///skip this if we do not have a csrfToken token because we skipped it for the endpoint.
+        res.locals.csrf_token = req.csrfToken();
+      }
       next();
     });
   }

@@ -112,6 +112,11 @@ module.exports = function (app, passport) {
   app.delete('/:id/widgets', albums.removeWidget);
   app.delete('/:id/widgets/all', albums.removeAllWidget);
 
+  //Email
+  //
+  //
+  app.post('/email', albums.email);
+
   
 
   // home route
