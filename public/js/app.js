@@ -20,7 +20,13 @@
     var addAllWidget = function(gridster, serialization){
         gridster.remove_all_widgets();
         $.each(serialization, function() {
-            gridster.add_widget('<li class="new">'+compiled({media_url:this.cdnUriProxy+'/org_'+this.fileName})+'</li>', this.size_x, this.size_y, this.col, this.row);
+            gridster.add_widget('<li class="new">'+compiled({
+                media_url:this.cdnUriProxy+'/org_'+this.fileName,
+                offset_x: this.offset_x,
+                offset_y: this.offset_y,
+                scale: this.scale,
+                caption: this.caption
+            })+'</li>', this.size_x, this.size_y, this.col, this.row);
         });
     };
     /**
@@ -83,8 +89,9 @@
             ,row : $el.attr('data-row')
             ,size_x: $el.attr('data-sizex')
             ,size_y: $el.attr('data-sizey')
-            // ,offset_x: $el.attr('data-offset_x')
-            // ,offset_y: $el.attr('data-offset_y')
+            ,offset_x: $el.attr('data-offset-x')
+            ,offset_y: $el.attr('data-offset-y')
+            ,scale: $el.attr('data-scale')
             // ,caption: $el.attr('data-caption')
             // ,location: $el.attr('data-location')
             });
@@ -218,7 +225,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 
         if(index >= 0) {
             // open PhotoSwipe if valid index found
-            openPhotoSwipe( index, clickedGallery[0] );
+            openPhotoSwipe( index, clickedGallery[0], true);
         }
         return false;
     };
@@ -277,7 +284,10 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
                     rect = thumbnail.getBoundingClientRect(); 
 
                 return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
-            }
+            },
+            hideAnimationDuration:0,
+            showAnimationDuration:0
+
 
         };
 
@@ -288,6 +298,10 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
         // Pass data to PhotoSwipe and initialize it
         gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
         gallery.init();
+        $('.pswp img').css("opacity",0);
+        $('.pswp img').on('load',function(){
+            $(this).css("opacity","");
+        });
     };
 
     // loop through all gallery elements and bind events

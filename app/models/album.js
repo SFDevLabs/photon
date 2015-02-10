@@ -57,6 +57,7 @@ var AlbumSchema = new Schema({
     size_y: { type : Number, default : null },
     offset_x: { type : Number, default : null },
     offset_y: { type : Number, default : null },
+    scale: { type : Number, default : null },
     caption: { type : Date, default : null },
     location: [{ type : Number, default : null }, { type : Number, default : null }],
     type: {type : String, default : '', trim : true},
