@@ -18,9 +18,12 @@
     margin:0px;
 
 }
-.gridster .gs-w a{
-    margin:5px;
-    display: none;
+.gridster .gs-w .hoverhide{
+    opacity: 0;
+}
+
+.gridster .gs-w:hover .hoverhide{
+    opacity: 1;
 }
 
 /*
@@ -33,6 +36,7 @@ Icons for Grid items
     position: absolute;
     color:#999;
     text-decoration: none;
+
     
 }
 
