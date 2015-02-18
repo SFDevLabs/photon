@@ -132,7 +132,7 @@ exports.update = function (req, res){
 
   // make sure no one changes the user
   delete req.body.user;
-  article = extend(article, req.body);
+  article = req.body;//extend(article, req.body);  //when we use backbone
 
   article.uploadAndSave(images, function (err) {
     if (!err) {
@@ -239,7 +239,7 @@ exports.removeAllWidget=function(req, res){
 exports.updateWidget=function(req, res){
   var album = req.album
   
-  //we loop the widget lsit and extend them one by one
+  //we loop the widget list and extend them one by one
   for (var i = album.widgets.length - 1; i >= 0; i--) {
     var bodyW = req.body.widgets[i]
     var albumW = album.widgets[i]

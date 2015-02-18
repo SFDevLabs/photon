@@ -38,8 +38,6 @@
       <a class="drop-toggle"> Toggle DropArea </a> 
       <a data-reposition="true" class="resize-grid"> Resize DropArea </a>       
     </div>
-
-
     <div class="background"></div>
 </nav>
 
@@ -55,7 +53,6 @@
 
 <div class="gridster">
     <ul class="gallery">
-
     </ul>
 </div>
 
@@ -64,8 +61,6 @@
     <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
   </div>
 </div>
-
-
 <!-- <div style="bottom: 0;
 position: absolute;">
 
@@ -154,7 +149,7 @@ position: absolute;">
 
     <figure class="dragger" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
             <span href="//<%= media_url %>" itemprop="contentUrl">
-                <img onload="sizeInject(this)" data-scale="<%= scale %>" data-offset-x="<%= offset_x %>" data-offset-y="<%= offset_y %>" ondragstart="return false;" class="grid-img unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
+                <img onload="sizeInject(this)" ondragstart="return false;" class="grid-img unselectable" src="//<%= media_url %>" itemprop="thumbnail" alt="Image description" />
             </span>
             <figcaption itemprop="caption description"><%= caption %></figcaption>
         </figure>
@@ -173,6 +168,8 @@ position: absolute;">
 <script src="/js/vendor/photoswipe.min.js"></script> 
 <script src="/js/vendor/dropzone.js"></script>
 <script src='/js/vendor/underscore.js'></script>
+<!-- <script src="/js/vendor/backbone.js"></script> 
+ -->
 
 <!-- UI JS file -->
 <script src="/js/vendor/photoswipe-ui-default.min.js"></script>
@@ -319,7 +316,6 @@ $(function(){
             setTimeout(function(){
               initPhotoSwipeFromDOM('.gallery');
 
-
               $(".resize-grid").click(function() {
                   //$(".grid-img").removeClass("unselectable");
                   var editing = toggleEditing('.edit-grid', true);   
@@ -327,24 +323,24 @@ $(function(){
 
                   var reposition = $(this).data('reposition');
                   $(this).data('reposition', !reposition);
-                  
+
                   if (reposition)
                     $('.gridster li').on('mousedown', mouseDownDrag);
                   else
                     $('.gridster li').off('mousedown', mouseDownDrag);
-
               });
 
               $(".dragger").each(function(){
-                var xVal = $(this).parent().find('img').attr('data-scale');
-                m = new Dragdealer(this,{
+                var $wrapper = $(this)
+                var $li = $wrapper.closest('li');
+                var xVal = $li.attr('data-scale');
+                new Dragdealer(this,{
                     x:xVal,
                     animationCallback:function(x,y){
                       //console.log(Math.log(x))
                       
                       var result = x
-                      var $wrapper = $(this.wrapper); 
-                      
+                        
                       $wrapper.parent().attr('data-scale',result);
                       $wrapper.parent().find('img').width('')
                       
@@ -354,6 +350,9 @@ $(function(){
                     }
                   });
               });
+
+              $(".gallery li").css('visibility','');
+
               // $(".scale-grid").click(function() {
               //     var result = prompt("Enter a scale percent");
               //     $(this).parent().attr('data-scale',result);

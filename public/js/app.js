@@ -7,8 +7,8 @@
   var gridster;
 
   	// same object than generated with gridster.serialize() method
-  	var rows=6;
-    var margins = [1,1]
+  	var rows=4;
+    var margins = [7,7]
     var tmpl=$("#figureTmpl").text();
     var compiled = _.template(tmpl);
     /**
@@ -19,14 +19,19 @@
 	 */
     var addAllWidget = function(gridster, serialization){
         gridster.remove_all_widgets();
-        $.each(serialization, function() {
-            gridster.add_widget('<li class="new">'+compiled({
+        $.each(serialization, function(i , data) {
+            
+            var $li = gridster.add_widget('<li class="new">'+compiled({
                 media_url:this.cdnUriProxy+'/org_'+this.fileName,
-                offset_x: this.offset_x,
-                offset_y: this.offset_y,
-                scale: this.scale,
+                
                 caption: this.caption
             })+'</li>', this.size_x, this.size_y, this.col, this.row);
+            $li.css('visibility','hidden');
+            $li.attr("data-offset-x", this.offset_x)
+            $li.attr("data-offset-y", this.offset_y)
+            $li.attr("data-scale",this.scale)
+            $li.attr("data-index",this.index)
+            //widow.widgets.push($li)
         });
     };
     /**
@@ -41,12 +46,12 @@
         return base
     };
 
-    $(window).resize(_.debounce(function(){
-        window.toggleEditing(".edit-grid",false);
-        gridster.destroy();
-         var newbaseSize = calculateBaseWidth(".gridster",margins,rows)
-         gridster = makeGridster(margins, newbaseSize);
-    }, 500));
+    // $(window).resize(_.debounce(function(){
+    //     window.toggleEditing(".edit-grid",false);
+    //     gridster.destroy();
+    //      var newbaseSize = calculateBaseWidth(".gridster",margins,rows)
+    //      gridster = makeGridster(margins, newbaseSize);
+    // }, 500));
 
 
     var baseSize = calculateBaseWidth(".gridster", margins,rows)
@@ -64,20 +69,20 @@
         return grid
     };
     window.makeGridster;
-    var gridster = makeGridster(margins, baseSize);
+    var gridster = makeGridster(margins, baseSize, true);
 
     var initGrid=function(serialization){
+        var serialization = serialization.map(function(obj, i){ obj.index=i; return obj})
     	var serialization = Gridster.sort_by_row_and_col_asc(serialization);
     	addAllWidget(gridster ,serialization);
-
     }
-    var editGrid = function(editing){
-		gridster.destroy();
-        var newbaseSize = calculateBaseWidth(".gridster",margins, rows);
-        gridster = makeGridster(margins, newbaseSize, editing);
-    }
+  //   var editGrid = function(editing){
+		// gridster.destroy();
+  //       var newbaseSize = calculateBaseWidth(".gridster",margins, rows);
+  //       gridster = makeGridster(margins, newbaseSize, editing);
+  //   }
 
-    window.editGrid=editGrid;
+    //window.editGrid=editGrid;
     window.initGrid = initGrid;
 
     var save = function(url, _csrf){
@@ -92,10 +97,12 @@
             ,offset_x: $el.attr('data-offset-x')
             ,offset_y: $el.attr('data-offset-y')
             ,scale: $el.attr('data-scale')
+            ,index: Number($el.attr('data-index'))
             // ,caption: $el.attr('data-caption')
             // ,location: $el.attr('data-location')
             });
         });
+        widgets = _.sortBy(widgets,"index");
         var m = JSON.stringify( {_csrf:_csrf,widgets:widgets} ) 
         $.ajax({
           url: url,

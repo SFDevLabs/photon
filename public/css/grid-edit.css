@@ -32,11 +32,11 @@ Icons for Grid items
 .gridster .gs-w .close-item{
     
     font-size: 1.3em;
-    right:0px;
     position: absolute;
     color:#999;
     text-decoration: none;
-
+    top: 5px;
+    right: 5px;
     
 }
 
@@ -45,6 +45,8 @@ Icons for Grid items
     color:#999;
     text-decoration: none;
     position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 .gridster .gs-w .scale-grid{
@@ -116,3 +118,9 @@ Icons for Grid items
     position: absolute;
 
 }
+
+/*.gallery li{
+    width:300px !important;
+    height:300px !important;
+
+}*/

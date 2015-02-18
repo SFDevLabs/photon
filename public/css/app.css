@@ -88,6 +88,11 @@ button.error:focus {
   color: #000 !important;
 }
 
+.navbar-header {
+  margin-right: 0px !important;
+  margin-right: 0px !important;
+}
+
 .navbar-nav > li > a.travis{
   padding-top: 13px;
 }
