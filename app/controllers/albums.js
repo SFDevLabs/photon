@@ -72,10 +72,11 @@ exports.create = function (req, res) {
     : undefined;
 
   article.user = req.user;
+
   article.save(function (err) {
     if (!err) {
       req.flash('success', 'Successfully created article!');
-      return res.redirect('/'+article._id);
+      return res.redirect('/'+article.url);
     }
     res.render('albums/new', {
       title: 'New Article',
@@ -153,50 +154,6 @@ exports.update = function (req, res){
 
 exports.widgets = function(req, res){
 
-
-  var widgets = [
-        {
-            col: 1,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 2,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 3,
-            row: 1,
-            size_x: 2,
-            size_y: 1,
-
-        },
-        {
-            col: 5,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 6,
-            row: 1,
-            size_x: 1,
-            size_y: 1,
-
-        },
-        {
-            col: 3,
-            row: 3,
-            size_x: 1,
-            size_y: 1
-        }
-      ];
       res.json(req.album.widgets)
 
 }
@@ -287,17 +244,19 @@ exports.destroy = function (req, res){
 
 exports.email = function (req, res){
 
-  console.log(req.body);
-  console.log(req.files);
-  console.log(Object.keys(req.files));
+  var files = Object.keys(req.files);
 
-  return res.status(200).send("success");
-  // var User = mongoose.model('User');
+  files.each(function(){
+    article.uploadAndSave(images, function (err) {
+      if (!err) {
+        return res.redirect('/' + article._id);
+      }
+      res.render('albums/edit', {
+        title: 'Edit Article',
+        article: article,
+        errors: utils.errors(err.errors || err)
+      });
+    });
+  });
 
-  // Album.load(id, function (err, album) {
-  //   if (err) return next(err);
-  //   if (!album) return next(new Error('not found'));
-  //   req.album = album;
-  //   next();
-  // });
 };

@@ -79,6 +79,17 @@ var AlbumSchema = new Schema({
 
 AlbumSchema.path('title').required(true, 'Article title cannot be blank');
 
+
+/**
+ * Pre-add hook
+ */
+
+AlbumSchema.pre('save', function (next) {
+  this.url=this.title.replace(" ","-");
+  //this.save();
+  next();
+});
+
 /**
  * Pre-remove hook
  */
@@ -216,7 +227,7 @@ AlbumSchema.statics = {
    */
 
   load: function (id, cb) {
-    this.findOne({ _id : id })
+    this.findOne({ url : id })
       .populate('user', 'name email username')
       .populate('comments.user')
       .exec(cb);
